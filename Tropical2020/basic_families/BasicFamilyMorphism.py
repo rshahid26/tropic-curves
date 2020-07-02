@@ -59,7 +59,7 @@ class BasicFamilyMorphism(object):
                 "curveMorphismDict should preserve genus."
 
     @staticmethod
-    def getMorphismFromOrderingDictionaries(domainOrderingDict, codomainOrderingDict):
+    def _getFamilyMorphisms(domainFamily, codomainFamily, pureGraphIso):
         pass
 
     @staticmethod
@@ -67,8 +67,10 @@ class BasicFamilyMorphism(object):
         assert isinstance(domainFamily, BasicFamily)
         assert isinstance(codomainFamily, BasicFamily)
 
-        return map(lambda x: BasicFamilyMorphism.getMorphismFromOrderingDictionaries(x[0], x[1]),
-                   GraphIsoHelper.getIsomorphismsIter(domainFamily, codomainFamily))
+        pureGraphIsos = GraphIsoHelper.getIsomorphismsIter(domainFamily, codomainFamily)
+
+        return map(lambda x: BasicFamilyMorphism._getFamilyMorphisms(domainFamily, codomainFamily, x),
+                   pureGraphIsos)
 
     @staticmethod
     def getAutomorphismsIter(basicFamily):
