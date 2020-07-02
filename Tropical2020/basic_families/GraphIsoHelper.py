@@ -1,3 +1,6 @@
+import itertools
+
+
 class GraphIsoHelper(object):
 
     @staticmethod
@@ -28,6 +31,10 @@ class GraphIsoHelper(object):
                 perms.append([m] + p)
         return perms
 
+    # Given a function permDict: A -> Powerset(B), returns a list of all
+    # functions of the form c \circ permDict: A \to B such that...
+    # 1. c is a choice function for image(permDict)
+    # 2. c \circ permDict is a bijection
     @staticmethod
     def getBijections(permDict):
 
@@ -49,35 +56,52 @@ class GraphIsoHelper(object):
                 perms.append(newDict)
         return perms
 
+    # Given functions a: A -> S and b: B -> S such that...
+    # 1. a and b are surjections, and
+    # 2. |A| = |B|,
+    # this method produces a list of all bijections f: A -> B such that f \circ b = a.
     @staticmethod
-    def checkIfBijectionIsIsomorphism(domain, codomain, domainOrderingDict, codomainOrderingDict):
+    def getFilteredBijections(a, b):
+        assert isinstance(a, dict)
+        assert isinstance(b, dict)
 
-        keyList = list(domainOrderingDict.keys())
+        if set(a.values()) != set(b.values()):
+            return []
 
-        inputList = []
-        outputList = []
-        for key in keyList:
-            inputList = inputList + domainOrderingDict[key]
-            outputList = outputList + codomainOrderingDict[key]
+        A = set(a.keys())
+        B = set(b.keys())
+        if len(A) != len(B):
+            return []
+
+        preimageOfB = {}
+        for v in b.values():
+            preimageOfB[v] = [k for k in b if b[k] == v]
+
+        # Compose the preimage of b with a
+        # This maps from A to Powerset(B)
+        permDict = {k: preimageOfB[a[k]] for k in a}
+
+        return GraphIsoHelper.getBijections(permDict)
+
+    # Checks if a bijection: domain.vertices -> codomain.vertices is an isomorphism
+    @staticmethod
+    def checkIfBijectionIsIsomorphism(domain, codomain, bijection):
 
         # print("Checking input list: ", [v.name for v in inputList])
         # print("With corresponding output list: ", [v.name for v in outputList])
 
-        for i in range(len(inputList)):
-            for j in range(len(inputList)):
-                # Number of edges connecting inputList[i] and inputList[j]
-                numInputEdges = sum(1 for e in domain.edges if e.vertices == {inputList[i], inputList[j]})
-                numOutputEdges = sum(1 for e in codomain.edges if e.vertices == {outputList[i], outputList[j]})
-                if numInputEdges != numOutputEdges:
-                    # print("Function does not preserve number of connecting edges")
-                    return False
-
-        for i in range(len(inputList)):
-            if inputList[i].genus != outputList[i].genus:
-                # print("Function does not preserve genus")
+        for v1, v2 in itertools.product(bijection, bijection):
+            numInputEdges = sum(1 for e in domain.edges if e.vertices == {v1, v2})
+            numOutputEdges = sum(1 for e in codomain.edges if e.vertices == {bijection[v1], bijection[v2]})
+            if numInputEdges != numOutputEdges:
+                # print("Function does not preserve number of connecting edges")
                 return False
-            numInputLegs = sum(1 for nextLeg in domain.legs if nextLeg.root == inputList[i])
-            numOutputLegs = sum(1 for nextLeg in codomain.legs if nextLeg.root == outputList[i])
+
+        for v in bijection:
+            if v.genus != bijection[v].genus:
+                return False
+            numInputLegs = sum(1 for leg in domain.legs if leg.root == v)
+            numOutputLegs = sum(1 for leg in codomain.legs if leg.root == bijection[v])
             if numInputLegs != numOutputLegs:
                 # print("Function does not preserve number of legs")
                 return False
@@ -87,24 +111,19 @@ class GraphIsoHelper(object):
 
     @staticmethod
     def getIsomorphismsIter(domain, codomain):
-        selfEverythingVertexDict = domain.getVerticesByCharacteristic()
-        otherEverythingVertexDict = codomain.getVerticesByCharacteristic()
+        from .BasicFamily import BasicFamily
+        assert isinstance(domain, BasicFamily)
+        assert isinstance(codomain, BasicFamily)
 
-        permDict = {}
-        for d in selfEverythingVertexDict:
-            permDict[d] = domain.getPermutations(selfEverythingVertexDict[d])
+        domainVertexInfo = {v: domain.getCharacteristicOfVertex(v) for v in domain.vertices}
+        codomainVertexInfo = {v: codomain.getCharacteristicOfVertex(v) for v in codomain.vertices}
+        bijections = GraphIsoHelper.getFilteredBijections(domainVertexInfo, codomainVertexInfo)
 
-        domainOrderingDicts = domain.getBijections(permDict)
-        domainIsoDicts = filter(lambda x:
-                                GraphIsoHelper.checkIfBijectionIsIsomorphism(domain, codomain,
-                                                                             x, otherEverythingVertexDict),
-                                domainOrderingDicts)
-
-        return map(lambda x: (x, otherEverythingVertexDict), domainIsoDicts)
+        return filter(lambda x: GraphIsoHelper.checkIfBijectionIsIsomorphism(domain, codomain, x), bijections)
 
     @staticmethod
     def isBruteForceIsomorphicTo(domain, codomain):
-        for x in GraphIsoHelper.getIsomorphismsIter(domain, codomain):
+        for _ in GraphIsoHelper.getIsomorphismsIter(domain, codomain):
             return True
         return False
 
