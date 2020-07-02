@@ -1,4 +1,9 @@
-from Tropical2020 import BasicFamily, MonoidHomomorphism, Vertex, Edge, Leg
+from .BasicFamily import BasicFamily
+from .RPC import MonoidHomomorphism
+from .Vertex import Vertex
+from .Edge import Edge
+from .Leg import Leg
+from .GraphIsoHelper import *
 
 
 class BasicFamilyMorphism(object):
@@ -52,6 +57,24 @@ class BasicFamilyMorphism(object):
         for vert in codomain.vertices:
             assert self.preimage(vert).genus == vert.genus, \
                 "curveMorphismDict should preserve genus."
+
+    @staticmethod
+    def getMorphismFromOrderingDictionaries(domainOrderingDict, codomainOrderingDict):
+        pass
+
+    @staticmethod
+    def getIsomorphismsIter(domainFamily, codomainFamily):
+        assert isinstance(domainFamily, BasicFamily)
+        assert isinstance(codomainFamily, BasicFamily)
+
+        return map(lambda x: BasicFamilyMorphism.getMorphismFromOrderingDictionaries(x[0], x[1]),
+                   GraphIsoHelper.getIsomorphismsIter(domainFamily, codomainFamily))
+
+    @staticmethod
+    def getAutomorphismsIter(basicFamily):
+        assert isinstance(basicFamily, BasicFamily)
+
+        return BasicFamilyMorphism.getIsomorphismsIter(basicFamily, basicFamily)
 
     # Returns the preimage of the given vertex as a BasicFamily
     def preimage(self, vert):
