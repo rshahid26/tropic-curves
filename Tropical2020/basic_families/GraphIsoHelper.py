@@ -95,11 +95,12 @@ class GraphIsoHelper(object):
             permDict[d] = domain.getPermutations(selfEverythingVertexDict[d])
 
         domainOrderingDicts = domain.getBijections(permDict)
-        isos = filter(lambda x:
-                      GraphIsoHelper.checkIfBijectionIsIsomorphism(domain, codomain, x, otherEverythingVertexDict),
-                      domainOrderingDicts)
+        domainIsoDicts = filter(lambda x:
+                                GraphIsoHelper.checkIfBijectionIsIsomorphism(domain, codomain,
+                                                                             x, otherEverythingVertexDict),
+                                domainOrderingDicts)
 
-        return isos
+        return map(lambda x: (x, otherEverythingVertexDict), domainIsoDicts)
 
     @staticmethod
     def isBruteForceIsomorphicTo(domain, codomain):
