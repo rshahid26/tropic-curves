@@ -309,6 +309,13 @@ class BasicFamily(object):
 
         return set(endpoints)
 
+    def getCharacteristicOfVertex(self, v):
+        edgeDegree = self.edgeDegree(v)
+        legDegree = self.legDegree(v)
+        g = v.genus
+        loops = sum(1 for e in self.edges if e.vertices == {v})
+        return edgeDegree, legDegree, g, loops
+
     # This dictionary keeps track of the number of vertices of a certain characteristic
     # Currently, the characteristic of a vertex v is a triple (d_e, d_l, g, l), where d_e is the edge degree of v,
     # d_l is the leg degree of v, and g is the genus of v, and there are l loops based at v.
@@ -320,12 +327,7 @@ class BasicFamily(object):
         if not self._vertexCharacteristicCacheValid:
             self._vertexCharacteristicCache = {}
             for v in self.vertices:
-                # Calculate the characteristic of v
-                edgeDegree = self.edgeDegree(v)
-                legDegree = self.legDegree(v)
-                g = v.genus
-                loops = sum(1 for e in self.edges if e.vertices == {v})
-                key = (edgeDegree, legDegree, g, loops)
+                key = self.getCharacteristicOfVertex(v)
 
                 # Increase the count of that characteristic, or set it to 1 if not already seen
                 if key in self._vertexCharacteristicCache:
@@ -347,12 +349,7 @@ class BasicFamily(object):
     def getVerticesByCharacteristic(self):
         vertexDict = {}
         for v in self.vertices:
-            # Get the characteristic of v
-            edgeDegree = self.edgeDegree(v)
-            legDegree = self.legDegree(v)
-            g = v.genus
-            loops = sum(1 for e in self.edges if e.vertices == {v})
-            key = (edgeDegree, legDegree, g, loops)
+            key = self.getCharacteristicOfVertex(v)
 
             # Update that characteristic entry, or initialize it if not already present
             if key in vertexDict:
