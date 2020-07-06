@@ -4,6 +4,7 @@ from .Vertex import Vertex
 from .Edge import Edge
 from .Leg import Leg
 from .GraphIsoHelper import *
+import itertools
 
 
 class BasicFamilyMorphism(object):
@@ -58,8 +59,47 @@ class BasicFamilyMorphism(object):
             assert self.preimage(vert).genus == vert.genus, \
                 "curveMorphismDict should preserve genus."
 
+    # Converts an isomorphism of pure graphs into a collection of isomorphisms of basic families
+    # This is done by incorporating edge lengths and leg marking
     @staticmethod
     def _getFamilyMorphisms(domainFamily, codomainFamily, pureGraphIso):
+
+        assert isinstance(domainFamily, BasicFamily)
+        assert isinstance(codomainFamily, BasicFamily)
+
+        assert isinstance(pureGraphIso, dict)
+        assert set(pureGraphIso.keys()) == domainFamily.vertices
+        assert set(pureGraphIso.values()) == codomainFamily.vertices
+
+        # Make sure that the given pure graph iso preserves leg marking
+        for vertex in domainFamily.vertices:
+            if vertex.marking != pureGraphIso[vertex].marking:
+                return set()
+
+        # Any choice function from this set will determine an isomorphism of basic families
+        partialIsomorphisms = {}
+
+        for v1, v2 in itertools.product(domainFamily.vertices, domainFamily.vertices):
+            # Set of edges connecting v1 and v2
+            domainConnections = {e for e in domainFamily.edges if e.vertices == {v1, v2}}
+
+            # Set of edges connecting the images of v1 and v2
+            codomainConnections = {e for e in codomainFamily.edges if e.vertices == {pureGraphIso[v1], pureGraphIso[v2]}}
+
+            # Record the lengths of the connections
+            domConByLength = {e: e.length for e in domainConnections}
+            codomConByLength = {e: e.length for e in codomainConnections}
+
+            # Get the set of all bijections from domainConnections to codomainConnections that preserve length
+            lengthPreservingBijections = GraphIsoHelper.getFilteredBijections(domConByLength, codomConByLength)
+            partialIsomorphisms[{v1, v2}] = lengthPreservingBijections
+
+        # Can't form any choice functions if one of our sets is empty
+        if set() in partialIsomorphisms:
+            return set()
+
+        # We now need to form the set of all choice functions / product...
+
         pass
 
     @staticmethod
