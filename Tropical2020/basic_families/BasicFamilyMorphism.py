@@ -45,13 +45,14 @@ class BasicFamilyMorphism(object):
                 "curveMorphismDict should preserve leg roots."
         for nextEdge in domain.edges:
             if curveMorphismDict[nextEdge] in codomain.edges:
-                assert set(map(lambda v: curveMorphismDict[v], nextEdge.vertices)) == curveMorphismDict[nextEdge].vertices, \
+                assert set(map(lambda v: curveMorphismDict[v], nextEdge.vertices)) == curveMorphismDict[
+                    nextEdge].vertices, \
                     "curveMorphismDict should preserve endpoints of non-collapsed edges."
                 assert monoidMorphism(nextEdge.length) == curveMorphismDict[nextEdge].length, \
                     "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
             if curveMorphismDict[nextEdge] in codomain.vertices:
                 assert curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert1] and \
-                    curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert2], \
+                       curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert2], \
                     "curveMorphismDict should preserve endpoints of collapsed edges."
                 assert monoidMorphism(nextEdge.length) == codomain.monoid.zero(), \
                     "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
@@ -59,7 +60,7 @@ class BasicFamilyMorphism(object):
             assert self.preimage(vert).genus == vert.genus, \
                 "curveMorphismDict should preserve genus."
 
-    # Converts an isomorphism of pure graphs into a collection of isomorphisms of basic families
+    # Converts an isomorphism of pure graphs into a set of isomorphisms of basic families
     # This is done by incorporating edge lengths and leg marking
     @staticmethod
     def _getFamilyMorphisms(domainFamily, codomainFamily, pureGraphIso):
@@ -84,7 +85,8 @@ class BasicFamilyMorphism(object):
             domainConnections = {e for e in domainFamily.edges if e.vertices == {v1, v2}}
 
             # Set of edges connecting the images of v1 and v2
-            codomainConnections = {e for e in codomainFamily.edges if e.vertices == {pureGraphIso[v1], pureGraphIso[v2]}}
+            codomainConnections = {e for e in codomainFamily.edges if
+                                   e.vertices == {pureGraphIso[v1], pureGraphIso[v2]}}
 
             # Record the lengths of the connections
             domConByLength = {e: e.length for e in domainConnections}
@@ -108,9 +110,15 @@ class BasicFamilyMorphism(object):
         assert isinstance(codomainFamily, BasicFamily)
 
         pureGraphIsos = GraphIsoHelper.getIsomorphismsIter(domainFamily, codomainFamily)
+        unflattenedBFIsos = map(lambda x: BasicFamilyMorphism._getFamilyMorphisms(domainFamily, codomainFamily, x),
+                                pureGraphIsos)
 
-        return map(lambda x: BasicFamilyMorphism._getFamilyMorphisms(domainFamily, codomainFamily, x),
-                   pureGraphIsos)
+        # Flatten the Set[Set[BasicFamily Isomorphism]] into a Set[Basic Family Isomorphism]]
+        basicFamilyIsos = set()
+        for s in unflattenedBFIsos:
+            basicFamilyIsos |= s
+
+        return basicFamilyIsos
 
     @staticmethod
     def getAutomorphismsIter(basicFamily):
