@@ -158,7 +158,9 @@ class BasicFamilyMorphism(object):
                 candidateLegs = {x for x in codomainFamily.legs if x.root == mappedRoot and x.marking == leg.marking}
                 curveMorphismDict[leg] = candidateLegs.pop()
 
-            basicFamilyIsos.add(BasicFamilyMorphism(domainFamily, codomainFamily, curveMorphismDict, ?????))
+            monoidMorphism = None
+
+            basicFamilyIsos.add(BasicFamilyMorphism(domainFamily, codomainFamily, curveMorphismDict, monoidMorphism))
 
         pass
 
