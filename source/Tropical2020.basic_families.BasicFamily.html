@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tropical2020.basic_families.BasicFamily module &#8212; Tropical2020  documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tropical2020.basic_families.Edge module" href="Tropical2020.basic_families.Edge.html" />
+    <link rel="prev" title="Tropical2020.basic_families package" href="Tropical2020.basic_families.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Tropical2020.basic_families.Edge.html" title="Tropical2020.basic_families.Edge module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Tropical2020.basic_families.html" title="Tropical2020.basic_families package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Tropical2020  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >Tropical2020</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="Tropical2020.html" >Tropical2020 package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="Tropical2020.basic_families.html" accesskey="U">Tropical2020.basic_families package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tropical2020.basic_families.BasicFamily module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Tropical2020.basic_families.BasicFamily">
+<span id="tropical2020-basic-families-basicfamily-module"></span><h1>Tropical2020.basic_families.BasicFamily module<a class="headerlink" href="#module-Tropical2020.basic_families.BasicFamily" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily">
+<em class="property">class </em><code class="sig-prename descclassname">Tropical2020.basic_families.BasicFamily.</code><code class="sig-name descname">BasicFamily</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name_</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a basic family of combinatorial tropical curves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – an identifier for the family</p></li>
+<li><p><strong>monoid</strong> (<a class="reference internal" href="Tropical2020.basic_families.RPC.html#Tropical2020.basic_families.RPC.Monoid" title="Tropical2020.basic_families.RPC.Monoid"><em>Tropical2020.basic_families.RPC.Monoid</em></a>) – a monoid from which the edge lengths of the family are taken</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.invalidateCaches">
+<code class="sig-name descname">invalidateCaches</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.invalidateCaches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invalidates the vertex, genus, characteristic, and core caches</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addVertex">
+<code class="sig-name descname">addVertex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span><span class="p">:</span> <span class="n">Vertex</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addVertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the specified vertex if it is not none</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree">
+<em class="property">class </em><code class="sig-name descname">Tree</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.addChild">
+<code class="sig-name descname">addChild</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em>, <em class="sig-param"><span class="n">connectingEdge</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.addChild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.findVertex">
+<code class="sig-name descname">findVertex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.findVertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.findVertexInChildren">
+<code class="sig-name descname">findVertexInChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.findVertexInChildren" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getAncestorEdges">
+<code class="sig-name descname">getAncestorEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getAncestorEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getEdges">
+<code class="sig-name descname">getEdges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getEdgesOfChildren">
+<code class="sig-name descname">getEdgesOfChildren</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getEdgesOfChildren" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getVertices">
+<code class="sig-name descname">getVertices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getVerticesFromChildren">
+<code class="sig-name descname">getVerticesFromChildren</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.getVerticesFromChildren" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.setParent">
+<code class="sig-name descname">setParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.setParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.setValue">
+<code class="sig-name descname">setValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.Tree.setValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addEdge">
+<code class="sig-name descname">addEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addEdge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addEdges">
+<code class="sig-name descname">addEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edges</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addLeg">
+<code class="sig-name descname">addLeg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">newLeg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addLeg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addLegs">
+<code class="sig-name descname">addLegs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">newLegs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addLegs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="id0">
+<code class="sig-name descname">addVertex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span><span class="p">:</span> <span class="n"><a class="reference internal" href="Tropical2020.basic_families.Vertex.html#Tropical2020.basic_families.Vertex.Vertex" title="Tropical2020.basic_families.Vertex.Vertex">Tropical2020.basic_families.Vertex.Vertex</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the specified vertex if it is not none</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> (<em>Vertex</em>) – the vertex to be added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addVertices">
+<code class="sig-name descname">addVertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.bettiNumber">
+<em class="property">property </em><code class="sig-name descname">bettiNumber</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.bettiNumber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.checkIfBijectionIsIsomorphism">
+<code class="sig-name descname">checkIfBijectionIsIsomorphism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">domainOrderingDict</span></em>, <em class="sig-param"><span class="n">codomainOrderingDict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.checkIfBijectionIsIsomorphism" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.contract">
+<code class="sig-name descname">contract</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.contract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.core">
+<em class="property">property </em><code class="sig-name descname">core</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.core" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.degree">
+<code class="sig-name descname">degree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.edgeDegree">
+<code class="sig-name descname">edgeDegree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.edgeDegree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.edges">
+<em class="property">property </em><code class="sig-name descname">edges</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.edgesWithVertices">
+<em class="property">property </em><code class="sig-name descname">edgesWithVertices</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.edgesWithVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.genus">
+<em class="property">property </em><code class="sig-name descname">genus</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.genus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getBijections">
+<code class="sig-name descname">getBijections</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">permDict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getBijections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getContraction">
+<code class="sig-name descname">getContraction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em>, <em class="sig-param"><span class="n">returnCopyInfo</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getContraction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getEndpointsOfEdges">
+<code class="sig-name descname">getEndpointsOfEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getEndpointsOfEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getFullyShallowCopy">
+<code class="sig-name descname">getFullyShallowCopy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">returnCopyInfo</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getFullyShallowCopy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getLoop">
+<code class="sig-name descname">getLoop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getLoop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getNumSelfLoops">
+<code class="sig-name descname">getNumSelfLoops</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getNumSelfLoops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getPermutations">
+<code class="sig-name descname">getPermutations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getPermutations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getSpanningTree">
+<code class="sig-name descname">getSpanningTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getSpanningTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.getVerticesByCharacteristic">
+<code class="sig-name descname">getVerticesByCharacteristic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.getVerticesByCharacteristic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="id1">
+<code class="sig-name descname">invalidateCaches</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invalidates the vertex, genus, characteristic, and core caches</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.isBruteForceIsomorphicTo">
+<code class="sig-name descname">isBruteForceIsomorphicTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.isBruteForceIsomorphicTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.isConnected">
+<em class="property">property </em><code class="sig-name descname">isConnected</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.isConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.isIsomorphicTo">
+<code class="sig-name descname">isIsomorphicTo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.isIsomorphicTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.legDegree">
+<code class="sig-name descname">legDegree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.legDegree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.legs">
+<em class="property">property </em><code class="sig-name descname">legs</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.legs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.legsWithVertices">
+<em class="property">property </em><code class="sig-name descname">legsWithVertices</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.legsWithVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.loops">
+<em class="property">property </em><code class="sig-name descname">loops</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.loops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.numEdges">
+<em class="property">property </em><code class="sig-name descname">numEdges</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.numEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.numEdgesWithVertices">
+<em class="property">property </em><code class="sig-name descname">numEdgesWithVertices</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.numEdgesWithVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.numVertices">
+<em class="property">property </em><code class="sig-name descname">numVertices</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.numVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.printCurve">
+<em class="property">static </em><code class="sig-name descname">printCurve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">curve</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.printCurve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.printSelf">
+<code class="sig-name descname">printSelf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.printSelf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdge">
+<code class="sig-name descname">removeEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span></em>, <em class="sig-param"><span class="n">removeDanglingVertices</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdges">
+<code class="sig-name descname">removeEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edges</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeLeg">
+<code class="sig-name descname">removeLeg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">badLeg</span></em>, <em class="sig-param"><span class="n">removeDanglingVertices</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeLeg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeLegs">
+<code class="sig-name descname">removeLegs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">badLegs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeLegs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeVertex">
+<code class="sig-name descname">removeVertex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">removeDanglingVertices</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeVertex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeVertices">
+<code class="sig-name descname">removeVertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.showEdges">
+<code class="sig-name descname">showEdges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.showEdges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.showLegs">
+<code class="sig-name descname">showLegs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.showLegs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.showNumbers">
+<code class="sig-name descname">showNumbers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.showNumbers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.showVertices">
+<code class="sig-name descname">showVertices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.showVertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.simplifyNames">
+<code class="sig-name descname">simplifyNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.simplifyNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.spanningTree">
+<em class="property">property </em><code class="sig-name descname">spanningTree</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.spanningTree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.vertexCharacteristicCounts">
+<em class="property">property </em><code class="sig-name descname">vertexCharacteristicCounts</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.vertexCharacteristicCounts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamilyMorphism">
+<em class="property">class </em><code class="sig-prename descclassname">Tropical2020.basic_families.BasicFamily.</code><code class="sig-name descname">BasicFamilyMorphism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">domain</span></em>, <em class="sig-param"><span class="n">codomain</span></em>, <em class="sig-param"><span class="n">curveMorphismDict</span></em>, <em class="sig-param"><span class="n">monoidMorphism</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamilyMorphism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamilyMorphism.image">
+<code class="sig-name descname">image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamilyMorphism.image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.basic_families.BasicFamily.BasicFamilyMorphism.preimage">
+<code class="sig-name descname">preimage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vert</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamilyMorphism.preimage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Tropical2020.basic_families.html"
+                        title="previous chapter">Tropical2020.basic_families package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Tropical2020.basic_families.Edge.html"
+                        title="next chapter">Tropical2020.basic_families.Edge module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/Tropical2020.basic_families.BasicFamily.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Tropical2020.basic_families.Edge.html" title="Tropical2020.basic_families.Edge module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Tropical2020.basic_families.html" title="Tropical2020.basic_families package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Tropical2020  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >Tropical2020</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="Tropical2020.html" >Tropical2020 package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="Tropical2020.basic_families.html" >Tropical2020.basic_families package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tropical2020.basic_families.BasicFamily module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Mathieu Foucher, Connor Meredith, Jonathan Wise.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>
