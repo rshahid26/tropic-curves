@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation for Developers &#8212; Tropical2020  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tropical2020" href="source/modules.html" />
+    <link rel="prev" title="Welcome to Tropical2020’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="source/modules.html" title="Tropical2020"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Tropical2020’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Tropical2020  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Installation for Developers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation-for-developers">
+<span id="dev-install"></span><h1>Installation for Developers<a class="headerlink" href="#installation-for-developers" title="Permalink to this headline">¶</a></h1>
+<p>This guide will show you how to install the project using the command line.</p>
+<p>This project uses <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> to automatically generate documentation from
+<a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard">Numpy docstrings</a>. This documentation
+is used by <a class="reference external" href="https://pages.github.com/">GitHub Pages</a> to host the documentation you’re reading right now. For this
+reason, the generated documentation is kept in its dedicated <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch.</p>
+<p>First create a directory to hold the project and enter it:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mkdir project
+cd project
+</pre></div>
+</div>
+<p>Then clone the repository where you will edit the project source code:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/cmeredit/Tropical2020.git
+</pre></div>
+</div>
+<p>Setting up the docs repository is slightly more complex:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mkdir Tropical2020-docs
+cd Tropical2020-docs
+git clone https://github.com/cmeredit/Tropical2020.git html
+cd html
+git checkout -b gh-pages remotes/origin/gh-pages
+</pre></div>
+</div>
+<p>At this point, <code class="docutils literal notranslate"><span class="pre">project/Tropical2020</span></code> contains the source code for the project, while <code class="docutils literal notranslate"><span class="pre">project/Tropical2020-docs</span></code>
+contains the automatically generated documentation used by GitHub Pages.</p>
+<p>Next, we will create a <a class="reference external" href="https://docs.python.org/3/tutorial/venv.html">virtual environment</a> that will be used while
+developing. From <code class="docutils literal notranslate"><span class="pre">project/Tropical2020</span></code>, create and activate a virtual environment:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>python3 -m venv env
+source env/bin/activate
+</pre></div>
+</div>
+<p>Finally, install the package in editable mode:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip3 install -e .
+</pre></div>
+</div>
+<p>To verify that everything has been installed correctly, you can run <code class="docutils literal notranslate"><span class="pre">pytest</span></code> from <code class="docutils literal notranslate"><span class="pre">project/Tropical2020</span></code>. This will
+produce a lot of text output, but you should see at the bottom of the output that all tests ran successfully. To
+deactivate the virtual environment, simply run <code class="docutils literal notranslate"><span class="pre">deactivate</span></code>.</p>
+<p>The project is now installed. To start working on it, read the guide about <a class="reference internal" href="contributing.html#contributing"><span class="std std-ref">Contributing to the Project</span></a>.</p>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Tropical2020’s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="source/modules.html"
+                        title="next chapter">Tropical2020</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dev-install.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="source/modules.html" title="Tropical2020"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Tropical2020’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Tropical2020  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Installation for Developers</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Mathieu Foucher, Connor Meredith, Jonathan Wise.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+  </body>
+</html>
