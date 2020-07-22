@@ -16,7 +16,9 @@
     <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tropical2020" href="source/modules.html" />
+    <link rel="prev" title="Installation for Developers" href="dev-install.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,6 +29,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="source/modules.html" title="Tropical2020"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="dev-install.html" title="Installation for Developers"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Tropical2020  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Contributing to the Project</a></li> 
       </ul>
@@ -39,7 +47,47 @@
             
   <div class="section" id="contributing-to-the-project">
 <span id="contributing"></span><h1>Contributing to the Project<a class="headerlink" href="#contributing-to-the-project" title="Permalink to this headline">¶</a></h1>
-<p>A contribution guide will go here!</p>
+<p>This contribution guide assumes that the project is installed as described in <a class="reference internal" href="dev-install.html#dev-install"><span class="std std-ref">Installation for Developers</span></a>. Here are some
+guidelines for contributing to the project.</p>
+<ul>
+<li><p>Do not commit directly to the master branch.</p></li>
+<li><p>Write short commit messages in the imperative mood. See <a class="reference external" href="https://chris.beams.io/posts/git-commit/">this post</a> for
+more details.</p></li>
+<li><p>Comment your code.</p></li>
+<li><p>Write docstrings for your code.</p></li>
+<li><p>Write tests for your code in <code class="docutils literal notranslate"><span class="pre">project/Tropical2020/test</span></code>.</p></li>
+<li><dl class="simple">
+<dt>To add a new feature <code class="docutils literal notranslate"><span class="pre">your_feature</span></code> to a branch <code class="docutils literal notranslate"><span class="pre">base_branch</span></code>, take the following steps:</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Set up your development branch:</dt><dd><ol class="arabic simple">
+<li><p>Checkout the base branch with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">base_branch</span></code>.</p></li>
+<li><p>Make a branch named after your feature and check it out with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">your_feature</span></code>.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Add your features. Once the code is stable, commented, and includes docstrings, and once all of your tests are
+written and pass, continue to the next step.</p></li>
+<li><dl class="simple">
+<dt>If <code class="docutils literal notranslate"><span class="pre">base_branch</span></code> is <code class="docutils literal notranslate"><span class="pre">master</span></code>, then rebuild the documentation:</dt><dd><ol class="arabic simple">
+<li><p>From <code class="docutils literal notranslate"><span class="pre">project/Tropical2020/docs</span></code>, run <code class="docutils literal notranslate"><span class="pre">sphinx-apidoc</span> <span class="pre">--separate</span> <span class="pre">-f</span> <span class="pre">-o</span> <span class="pre">source</span> <span class="pre">../Tropical2020</span></code> followed
+by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code>. This will generate the project documentation in <code class="docutils literal notranslate"><span class="pre">project/Tropical2020-docs/html</span></code>.</p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">project/Tropical2020-docs/html/index.html</span></code> and make sure the parts of the documentation relating to
+your changes are correct.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Merge your feature branch into <code class="docutils literal notranslate"><span class="pre">base_branch</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">base_branch</span></code> is <code class="docutils literal notranslate"><span class="pre">master</span></code>, then navigate to <code class="docutils literal notranslate"><span class="pre">project/Tropical2020-docs/html</span></code>, add and commit any
+changes, and push to <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Congratulations! Your feature is now part of <code class="docutils literal notranslate"><span class="pre">base_branch</span></code>! If <code class="docutils literal notranslate"><span class="pre">base_branch</span></code> was <code class="docutils literal notranslate"><span class="pre">master</span></code>, then your changes
+are now also reflected in the project documentation.</p>
+</li>
+</ul>
 </div>
 
 
@@ -49,6 +97,12 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dev-install.html"
+                        title="previous chapter">Installation for Developers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="source/modules.html"
+                        title="next chapter">Tropical2020</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -79,6 +133,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="source/modules.html" title="Tropical2020"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="dev-install.html" title="Installation for Developers"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Tropical2020  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Contributing to the Project</a></li> 
       </ul>
