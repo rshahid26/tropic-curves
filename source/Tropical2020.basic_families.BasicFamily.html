@@ -122,12 +122,25 @@
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addEdge">
 <code class="sig-name descname">addEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span><span class="p">:</span> <span class="n"><a class="reference internal" href="Tropical2020.basic_families.Edge.html#Tropical2020.basic_families.Edge.Edge" title="Tropical2020.basic_families.Edge.Edge">Tropical2020.basic_families.Edge.Edge</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds the specified edge and its endpoints, and invalidates caches</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>e</strong> (<a class="reference internal" href="Tropical2020.basic_families.Edge.html#Tropical2020.basic_families.Edge.Edge" title="Tropical2020.basic_families.Edge.Edge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Edge</span></code></a>) – the edge to be added</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addEdges">
 <code class="sig-name descname">addEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edges</span><span class="p">:</span> <span class="n">set</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.addEdges" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds each edge in the given set</p>
+<p>Calls <cite>addEdge</cite> on each edge in <code class="docutils literal notranslate"><span class="pre">edges</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>edges</strong> (<em>set</em>)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.addLeg">
@@ -196,7 +209,10 @@ parameter. This means that if <code class="docutils literal notranslate"><span c
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.edges">
 <em class="property">property </em><code class="sig-name descname">edges</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.edges" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>holds a set of <a class="reference internal" href="Tropical2020.basic_families.Edge.html#Tropical2020.basic_families.Edge.Edge" title="Tropical2020.basic_families.Edge.Edge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Edge</span></code></a> instances.</p>
+<p>The edges in a basic family can not be modified without considering the vertices and
+legs of the family, so we control how they are get and set.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.edgesWithVertices">
@@ -323,12 +339,30 @@ parameter. This means that if <code class="docutils literal notranslate"><span c
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdge">
 <code class="sig-name descname">removeEdge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e</span><span class="p">:</span> <span class="n"><a class="reference internal" href="Tropical2020.basic_families.Edge.html#Tropical2020.basic_families.Edge.Edge" title="Tropical2020.basic_families.Edge.Edge">Tropical2020.basic_families.Edge.Edge</a></span></em>, <em class="sig-param"><span class="n">removeDanglingVertices</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdge" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removes the specified edge</p>
+<p>Optionally, if <code class="docutils literal notranslate"><span class="pre">removeDanglingVertices</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, then after edge <code class="docutils literal notranslate"><span class="pre">e</span></code> is
+removed, any vertex of degree zero will also be removed. Also invalidates caches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<a class="reference internal" href="Tropical2020.basic_families.Edge.html#Tropical2020.basic_families.Edge.Edge" title="Tropical2020.basic_families.Edge.Edge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Edge</span></code></a>) – the edge to be removed</p></li>
+<li><p><strong>removeDanglingVertices</strong> (<em>bool</em>) – whether or not to also remove dangling vertices after <code class="docutils literal notranslate"><span class="pre">e</span></code> is removed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdges">
 <code class="sig-name descname">removeEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">edges</span><span class="p">:</span> <span class="n">set</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.removeEdges" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removes each edge in the given set</p>
+<p>Makes a call to <cite>removeEdge</cite> on each element of <code class="docutils literal notranslate"><span class="pre">edges</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>edges</strong> (<em>set</em>) – the set of edges to be removed</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.removeLeg">
@@ -406,7 +440,10 @@ parameter. This means that if <code class="docutils literal notranslate"><span c
 <dl class="py method">
 <dt id="Tropical2020.basic_families.BasicFamily.BasicFamily.vertices">
 <em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#Tropical2020.basic_families.BasicFamily.BasicFamily.vertices" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>holds a set of <a class="reference internal" href="Tropical2020.basic_families.Vertex.html#Tropical2020.basic_families.Vertex.Vertex" title="Tropical2020.basic_families.Vertex.Vertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vertex</span></code></a> instances.</p>
+<p>The vertices in a basic family can not be modified without considering the edges and
+legs of the family, so we control how they are get and set.</p>
+</dd></dl>
 
 </dd></dl>
 
