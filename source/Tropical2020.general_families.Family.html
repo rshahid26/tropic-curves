@@ -65,9 +65,52 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="Tropical2020.general_families.Family.Family.getSubdivision">
+<code class="sig-name descname">getSubdivision</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basicFamily</span><span class="p">:</span> <span class="n"><a class="reference internal" href="Tropical2020.basic_families.BasicFamily.html#Tropical2020.basic_families.BasicFamily.BasicFamily" title="Tropical2020.basic_families.BasicFamily.BasicFamily">Tropical2020.basic_families.BasicFamily.BasicFamily</a></span></em>, <em class="sig-param"><span class="n">elt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.general_families.Family.Family.getSubdivision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the subdivision at <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code> and <code class="docutils literal notranslate"><span class="pre">elt</span></code></p>
+<p>This function deeply copies the family, calls
+<a class="reference internal" href="#Tropical2020.general_families.Family.Family.subdivide" title="Tropical2020.general_families.Family.Family.subdivide"><code class="xref py py-func docutils literal notranslate"><span class="pre">subdivide()</span></code></a> on the copy, and then returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basicFamily</strong> (<a class="reference internal" href="Tropical2020.basic_families.BasicFamily.html#Tropical2020.basic_families.BasicFamily.BasicFamily" title="Tropical2020.basic_families.BasicFamily.BasicFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicFamily</span></code></a>) – the basic family at which to subdivide</p></li>
+<li><p><strong>elt</strong> (<code class="docutils literal notranslate"><span class="pre">basicFamily.monoid.Element</span></code>) – the element determining the subdivision</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">elt</span></code> must be an instance of <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code>’s <a class="reference internal" href="Tropical2020.basic_families.RPC.html#Tropical2020.basic_families.RPC.Monoid" title="Tropical2020.basic_families.RPC.Monoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monoid</span></code></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Tropical2020.general_families.Family.Family.maximalCurvesIter">
 <code class="sig-name descname">maximalCurvesIter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.general_families.Family.Family.maximalCurvesIter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="Tropical2020.general_families.Family.Family.subdivide">
+<code class="sig-name descname">subdivide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basicFamily</span><span class="p">:</span> <span class="n"><a class="reference internal" href="Tropical2020.basic_families.BasicFamily.html#Tropical2020.basic_families.BasicFamily.BasicFamily" title="Tropical2020.basic_families.BasicFamily.BasicFamily">Tropical2020.basic_families.BasicFamily.BasicFamily</a></span></em>, <em class="sig-param"><span class="n">elt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tropical2020.general_families.Family.Family.subdivide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subdivides the family in place at <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code> and <code class="docutils literal notranslate"><span class="pre">elt</span></code></p>
+<p>This function subdivides the family in place. <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code> is replaced with three other
+basic families, all of which are obtained by modifying the underlying monoid of <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code>.
+Letting <code class="docutils literal notranslate"><span class="pre">M</span></code> denote the monoid associated to <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code>, the three new basic families are
+identical to <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code> except their underlying monoids are <code class="docutils literal notranslate"><span class="pre">M[elt]</span></code>, <code class="docutils literal notranslate"><span class="pre">M[-elt]</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">M[elt,</span> <span class="pre">-elt]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basicFamily</strong> (<a class="reference internal" href="Tropical2020.basic_families.BasicFamily.html#Tropical2020.basic_families.BasicFamily.BasicFamily" title="Tropical2020.basic_families.BasicFamily.BasicFamily"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicFamily</span></code></a>) – the basic family at which to subdivide</p></li>
+<li><p><strong>elt</strong> (<code class="docutils literal notranslate"><span class="pre">basicFamily.monoid.Element</span></code>) – the element determining the subdivision</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">elt</span></code> must be an instance of <code class="docutils literal notranslate"><span class="pre">basicFamily</span></code>’s <a class="reference internal" href="Tropical2020.basic_families.RPC.html#Tropical2020.basic_families.RPC.Monoid" title="Tropical2020.basic_families.RPC.Monoid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monoid</span></code></a>.</p>
+</div>
+</dd></dl>
 
 </dd></dl>
 
