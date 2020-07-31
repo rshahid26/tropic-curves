@@ -1,7 +1,10 @@
 # Tropical2020
 Classifying Tropical Surfaces Research Summer 2020 - CU Boulder
 
+For automatically generated documentation, please see [this website](https://cmeredit.github.io/Tropical2020/).
+
 ## Contents:
+
 
 1. [Introduction](#Introduction)
 2. [Testing](#Testing)
@@ -11,6 +14,8 @@ Classifying Tropical Surfaces Research Summer 2020 - CU Boulder
 6. [General Families](#Families)
 
 ## Introduction <a name="Introduction"></a>
+
+For automatically generated documentation, see [these files](docs/_build/markdown/index.md).
 
 ### What is the code, and how to use it:
 
