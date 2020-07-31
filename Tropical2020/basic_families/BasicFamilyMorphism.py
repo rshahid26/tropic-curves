@@ -1,14 +1,20 @@
+import itertools
+from typing import Any, Dict
+
 from .BasicFamily import BasicFamily
 from .RPC import MonoidHomomorphism
 from .Vertex import Vertex
 from .Edge import Edge
 from .Leg import Leg
-from .GraphIsoHelper import *
-import itertools
+from .GraphIsoHelper import GraphIsoHelper
 
 
 class BasicFamilyMorphism(object):
-    def __init__(self, domain, codomain, curveMorphismDict, monoidMorphism):
+    def __init__(self,
+                 domain: BasicFamily,
+                 codomain: BasicFamily,
+                 curveMorphismDict: Dict[Any, Any],
+                 monoidMorphism: MonoidHomomorphism):
 
         # Type checking
         assert isinstance(domain, BasicFamily), "The domain of a basic family morphism should be a BasicFamily."

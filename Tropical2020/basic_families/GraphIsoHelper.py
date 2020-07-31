@@ -1,10 +1,18 @@
 import itertools
+from typing import Dict, List, TypeVar
+
+from .BasicFamily import BasicFamily
+from .Vertex import Vertex
 
 
 class GraphIsoHelper(object):
 
+    A = TypeVar("A")
+    B = TypeVar("B")
+    S = TypeVar("S")
+
     @staticmethod
-    def getPermutations(lst):
+    def getPermutations(lst: List[A]) -> List[List[A]]:
         # If lst is empty then there are no permutations
         if len(lst) == 0:
             return []
@@ -36,7 +44,7 @@ class GraphIsoHelper(object):
     # 1. c is a choice function for image(permDict)
     # 2. c \circ permDict is a bijection
     @staticmethod
-    def getBijections(permDict):
+    def getBijections(permDict: Dict[A, List[B]]) -> List[Dict[A, B]]:
 
         if len(permDict) == 0:
             return [{}]
@@ -61,7 +69,7 @@ class GraphIsoHelper(object):
     # 2. |A| = |B|,
     # this method produces a list of all bijections f: A -> B such that f \circ b = a.
     @staticmethod
-    def getFilteredBijections(a, b):
+    def getFilteredBijections(a: Dict[A, S], b: Dict[A, S]) -> List[Dict[A, B]]:
         assert isinstance(a, dict)
         assert isinstance(b, dict)
 
@@ -85,7 +93,10 @@ class GraphIsoHelper(object):
 
     # Checks if a bijection: domain.vertices -> codomain.vertices is an isomorphism
     @staticmethod
-    def checkIfBijectionIsIsomorphism(domain, codomain, bijection):
+    def checkIfBijectionIsIsomorphism(
+            domain: BasicFamily,
+            codomain: BasicFamily,
+            bijection: Dict[Vertex, Vertex]) -> bool:
 
         # print("Checking input list: ", [v.name for v in inputList])
         # print("With corresponding output list: ", [v.name for v in outputList])
