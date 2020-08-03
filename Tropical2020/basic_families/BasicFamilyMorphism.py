@@ -185,13 +185,13 @@ class BasicFamilyMorphism(object):
         return basicFamilyIsos
 
     @staticmethod
-    def getAutomorphismsIter(basicFamily):
+    def getAutomorphismsIter(basicFamily: BasicFamily) -> Iterator["BasicFamilyMorphism"]:
         assert isinstance(basicFamily, BasicFamily)
 
         return BasicFamilyMorphism.getIsomorphismsIter(basicFamily, basicFamily)
 
     # Returns the preimage of the given vertex as a BasicFamily
-    def preimage(self, vert):
+    def preimage(self, vert: Vertex) -> BasicFamily:
         assert vert in self.codomain.vertices, "vert should be a codomain vertex"
 
         preimageVertices = {v for v in self.domain.vertices if self.curveMorphismDict[v] == vert}
@@ -204,7 +204,7 @@ class BasicFamilyMorphism(object):
         return preimage
 
     # Returns the image of the morphism as a BasicFamily
-    def image(self):
+    def image(self) -> BasicFamily:
 
         # Note that we don't need to worry about edges that collapse to a vertex - their endpoints go to the same place.
         imageVertices = {self(v) for v in self.domain.vertices}
