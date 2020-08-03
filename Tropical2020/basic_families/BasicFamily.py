@@ -612,17 +612,11 @@ class BasicFamily(object):
         """
 
         endpoints: List[Tuple[Union[Leg, Edge], int]] = []
-
-        for e in self.edges:
-            if e.vert1 == v:
-                endpoints += [(e, 1)]
-            if e.vert2 == v:
-                endpoints += [(e, 2)]
+        endpoints += [(edge, 1) for edge in self.edges if edge.vert1 == v]
+        endpoints += [(edge, 2) for edge in self.edges if edge.vert2 == v]
 
         # By default, consider the root of a leg to be its first endpoint
-        for nextLeg in self.legs:
-            if nextLeg.root == v:
-                endpoints += [(nextLeg, 1)]
+        endpoints += [(leg, 1) for leg in self.legs if leg.root == v]
 
         return set(endpoints)
 
