@@ -1,5 +1,5 @@
 import itertools
-from typing import Any, Dict, Set, Union
+from typing import Any, Dict, Iterator, List, Set, TypeVar, Union
 
 from .BasicFamily import BasicFamily
 from .RPC import MonoidHomomorphism
@@ -17,7 +17,7 @@ class BasicFamilyMorphism(object):
                  domain: BasicFamily,
                  codomain: BasicFamily,
                  curveMorphismDict: Dict[GraphComponent, Any],
-                 monoidMorphism: MonoidHomomorphism):
+                 monoidMorphism: MonoidHomomorphism) -> None:
 
         # Type checking
         assert isinstance(domain, BasicFamily), "The domain of a basic family morphism should be a BasicFamily."
@@ -75,7 +75,7 @@ class BasicFamilyMorphism(object):
     def _getFamilyMorphisms(
             domainFamily: BasicFamily,
             codomainFamily: BasicFamily,
-            pureGraphIso: Dict[GraphComponent, GraphComponent]) -> Set["BasicFamilyMorphism"]:
+            pureGraphIso: Dict[Vertex, Vertex]) -> Set["BasicFamilyMorphism"]:
 
         assert isinstance(domainFamily, BasicFamily)
         assert isinstance(codomainFamily, BasicFamily)
@@ -87,12 +87,12 @@ class BasicFamilyMorphism(object):
         # Make sure that the given pure graph iso preserves leg marking
         for leg in domainFamily.legs:
             mappedRoot = pureGraphIso[leg.root]
-            candidateLegs = {x for x in codomainFamily.legs if x.root == mappedRoot and x.marking == leg.marking}
+            candidateLegs = {leg for leg in codomainFamily.legs if leg.root == mappedRoot and leg.marking == leg.marking}
             if len(candidateLegs) == 0:
                 return set()
 
         # Any choice function from this dict will determine an isomorphism of basic families
-        partialIsomorphisms = {}
+        partialIsomorphisms: Dict[Set[Vertex], List[Dict[Edge, Edge]]] = {}
 
         for v1, v2 in itertools.product(domainFamily.vertices, domainFamily.vertices):
             # Set of edges connecting v1 and v2
@@ -114,48 +114,39 @@ class BasicFamilyMorphism(object):
         if set() in partialIsomorphisms:
             return set()
 
-        # We now need to form the set of all choice functions / product...
+        A = TypeVar("A")
+        B = TypeVar("B")
+
         # Helps convert partialIsomorphisms, which has type Set[Vertex] => (Edge => Edge), into a value of type
         # Set[Edge => Edge]. Any choice function for image(partialIsomorphisms) is essentially a function Edge => Edge,
         # and we collect all such things into a set.
-        def _getProductDictionary(current, remaining):
-            # Assert that current has type Set[Edge => Edge] (too lazy to check more refined type)
-            assert isinstance(current, set)
-            assert all(map(lambda x: isinstance(x, dict), current))
-
-            # Assert that remaining has type Set[???] => Set[??? => ???] (too lazy to check more refined type)
-            # Supposed to be Set[Vertex] => Set[Edge => Edge]
-            assert isinstance(remaining, dict)
-            assert all(map(lambda x: isinstance(x, set), remaining.keys()))
-            assert all(map(lambda x: isinstance(x, set), remaining.values()))
-            assert all(map(lambda x: all(map(lambda y: isinstance(y, dict), x)), remaining.values()))
-            for x in remaining.values():
-                assert all(map(lambda y: isinstance(y, dict), x))
-
+        def _getProductDictionary(
+                current: Set[Dict[B, B]],
+                remaining: Dict[A, List[Dict[B, B]]]
+        ) -> Set[Dict[B, B]]:
             if len(remaining) == 0:
                 return current
 
-            # This will become a Set[Edge => Edge]
-            newFunctions = set()
+            newFunctions: Set[Dict[B, B]] = set()
 
-            # partsToAssimilate is a Set[Edge => Edge]
-            keyToPop = list(remaining.keys())[0]
-            partsToAssimilate = remaining.pop(keyToPop)
+            keyToPop: A = list(remaining.keys())[0]
+            partsToAssimilate: List[Dict[B, B]] = remaining.pop(keyToPop)
 
             for func in current:
                 for newPart in partsToAssimilate:
-                    newFunc = {}
-                    for x in func:
-                        newFunc[x] = func[x]
-                    for x in newPart:
-                        newFunc[x] = newPart[x]
+                    newFunc: Dict[B, B] = {}
+                    for b in func:
+                        newFunc[b] = func[b]
+                    for b in newPart:
+                        newFunc[b] = newPart[b]
                     newFunctions.add(newFunc)
 
             return _getProductDictionary(newFunctions, remaining)
 
-        edgeIsos = _getProductDictionary(set({}), partialIsomorphisms)
+        # We now need to form the set of all choice functions / product...
+        edgeIsos: Set[Dict[Edge, Edge]] = _getProductDictionary(set({}), partialIsomorphisms)
 
-        basicFamilyIsos = set()
+        basicFamilyIsos: Set["BasicFamilyMorphism"] = set()
         for edgeIso in edgeIsos:
             curveMorphismDict: Dict[GraphComponent, GraphComponent] = {}
 
@@ -181,18 +172,15 @@ class BasicFamilyMorphism(object):
         return basicFamilyIsos
 
     @staticmethod
-    def getIsomorphismsIter(domainFamily, codomainFamily):
+    def getIsomorphismsIter(domainFamily: BasicFamily, codomainFamily: BasicFamily) -> Iterator["BasicFamilyMorphism"]:
         assert isinstance(domainFamily, BasicFamily)
         assert isinstance(codomainFamily, BasicFamily)
 
         pureGraphIsos = GraphIsoHelper.getIsomorphismsIter(domainFamily, codomainFamily)
-        unflattenedBFIsos = map(lambda x: BasicFamilyMorphism._getFamilyMorphisms(domainFamily, codomainFamily, x),
-                                pureGraphIsos)
-
-        # Flatten the Set[Set[BasicFamily Isomorphism]] into a Set[Basic Family Isomorphism]]
-        basicFamilyIsos = set()
-        for s in unflattenedBFIsos:
-            basicFamilyIsos |= s
+        basicFamilyIsos: Iterator[BasicFamilyMorphism] = itertools.chain.from_iterable(map(
+            lambda x: BasicFamilyMorphism._getFamilyMorphisms(domainFamily, codomainFamily, x),
+            pureGraphIsos
+        ))
 
         return basicFamilyIsos
 
