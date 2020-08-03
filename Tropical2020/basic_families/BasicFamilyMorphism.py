@@ -1,5 +1,5 @@
 import itertools
-from typing import Any, Dict
+from typing import Any, Dict, Set, Union
 
 from .BasicFamily import BasicFamily
 from .RPC import MonoidHomomorphism
@@ -8,12 +8,15 @@ from .Edge import Edge
 from .Leg import Leg
 from .GraphIsoHelper import GraphIsoHelper
 
+VertexMap = Dict[Vertex, Vertex]
+GraphComponent = Union[Vertex, Leg, Edge]
+
 
 class BasicFamilyMorphism(object):
     def __init__(self,
                  domain: BasicFamily,
                  codomain: BasicFamily,
-                 curveMorphismDict: Dict[Any, Any],
+                 curveMorphismDict: Dict[GraphComponent, Any],
                  monoidMorphism: MonoidHomomorphism):
 
         # Type checking
@@ -59,7 +62,7 @@ class BasicFamilyMorphism(object):
             if curveMorphismDict[nextEdge] in codomain.vertices:
                 assert curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert1] and \
                        curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert2], \
-                    "curveMorphismDict should preserve endpoints of collapsed edges."
+                       "curveMorphismDict should preserve endpoints of collapsed edges."
                 assert monoidMorphism(nextEdge.length) == codomain.monoid.zero(), \
                     "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
         for vert in codomain.vertices:
@@ -69,7 +72,10 @@ class BasicFamilyMorphism(object):
     # Converts an isomorphism of pure graphs into a set of isomorphisms of basic families
     # This is done by incorporating edge lengths and leg marking
     @staticmethod
-    def _getFamilyMorphisms(domainFamily, codomainFamily, pureGraphIso):
+    def _getFamilyMorphisms(
+            domainFamily: BasicFamily,
+            codomainFamily: BasicFamily,
+            pureGraphIso: Dict[GraphComponent, GraphComponent]) -> Set["BasicFamilyMorphism"]:
 
         assert isinstance(domainFamily, BasicFamily)
         assert isinstance(codomainFamily, BasicFamily)
@@ -151,7 +157,7 @@ class BasicFamilyMorphism(object):
 
         basicFamilyIsos = set()
         for edgeIso in edgeIsos:
-            curveMorphismDict = {}
+            curveMorphismDict: Dict[GraphComponent, GraphComponent] = {}
 
             for vertex in domainFamily.vertices:
                 curveMorphismDict[vertex] = pureGraphIso[vertex]
@@ -164,11 +170,15 @@ class BasicFamilyMorphism(object):
                 candidateLegs = {x for x in codomainFamily.legs if x.root == mappedRoot and x.marking == leg.marking}
                 curveMorphismDict[leg] = candidateLegs.pop()
 
-            monoidMorphism = None
+            matrix = {}
+            for gen in domainFamily.monoid.gens:
+                edge = [e for e in domainFamily.edges if e.length == domainFamily.monoid.Element({gen: 1})][0]
+                matrix[gen] = edgeIso[edge].length
+            monoidMorphism = MonoidHomomorphism(domainFamily, codomainFamily, matrix)
 
             basicFamilyIsos.add(BasicFamilyMorphism(domainFamily, codomainFamily, curveMorphismDict, monoidMorphism))
 
-        pass
+        return basicFamilyIsos
 
     @staticmethod
     def getIsomorphismsIter(domainFamily, codomainFamily):
