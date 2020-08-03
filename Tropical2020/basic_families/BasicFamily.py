@@ -597,18 +597,18 @@ class BasicFamily(object):
     # Returns the set of all elements of the form (e, n), where e is an edge or leg, n is 1 or 2,
     # and the n^th endpoint of e is v
     def getEndpointsOfEdges(self, v: Vertex) -> Set[Tuple[Union[Leg, Edge], int]]:
-
-        """This function returns the set of all elements of the form `(e,n)`, where e is an edge or leg, and n is 1 or 2.
-        The nth endpoint of e is v.
+        """This function returns the set of all elements of the form ``(e,n)`` where ``e`` is an edge or leg, ``n`` is
+        1 or 2, and the ``n``th endpoint of ``e`` is ``v``.
 
         Parameters
         ----------
         v : :class:`~Tropical2020.basic_families.Vertex.Vertex`
-        The vertex which will have edges calculated.
+            The vertex which will have edges calculated.
 
         Returns
         -------
-        A set of tuples (e,n).
+        set
+            The set of endpoints of edges at ``v``.
         """
 
         endpoints: List[Tuple[Union[Leg, Edge], int]] = []
@@ -633,19 +633,20 @@ class BasicFamily(object):
     # "vertexEverythingDict"s, then they are definitely not isomorphic.
     @property
     def vertexCharacteristicCounts(self) -> Dict[VertexCharacteristic, int]:
+        """Keeps track of the number of vertices of a certain characteristic.
 
-        """This dictionary keeps track of the number of vertices of a certain characteristic. Currently, the characteristic of a vertex v is a triple `(d_e, d_l, g, l)`, where 
-        `d_e` is the edge degree of `v`.
-        `d_l` is the leg degree of v, and `g` is the genus of `v`, and there are `l` loops based at `v`.
-        The characteristic of a vertex is invariant under isomorphism. so if two graphs have different "vertexEverythingDict"s, then they are definitely not isomorphic.
+        Currently, the characteristic of a vertex ``v`` is a triple ``(d_e, d_l, g, l)``, where ``d_e`` is the edge
+        degree of ``v``, ``d_l`` is the leg degree of ``v``, and ``g`` is the genus of ``v``, and there are ``l`` loops
+        based at ``v``.
 
-        Parameters
-        ----------
-        self
+        The characteristic of a vertex is invariant under isomorphism, so if two graphs have different
+        results for ``vertexCharacteristicCounts``, then they are not isomorphic.
 
         Returns
         -------
-        A dictionary where the keys are vertices of a certain characteristic, and the values are the number of said vertices.
+        dict
+            A dictionary where the keys are vertices of a certain characteristic
+            and the values are the number of said vertices.
         """
 
         # If the cached copy of the dictionary is invalid, then recalculate it.
