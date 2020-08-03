@@ -1,0 +1,38 @@
+from Tropical2020.basic_families import *
+
+# Set up a free monoid for sake of convenience
+freeMonoid = Monoid()
+freeMonoid.addgen("a")
+freeElementA = freeMonoid.Element({"a": 1})
+freeMonoid.addgen("b")
+freeElementB = freeMonoid.Element({"b": 1})
+freeMonoid.addgen("c")
+freeElementC = freeMonoid.Element({"c": 1})
+freeMonoid.addgen("d")
+freeElementD = freeMonoid.Element({"d": 1})
+
+
+def test_example_3_5():
+    C = BasicFamily("Example 3.5")
+
+    v1 = Vertex("v1", 0)
+    v2 = Vertex("v2", 0)
+    v3 = Vertex("v3", 1)
+    # Take all edges to be of the same length (for sake of mesa testing)
+    e1 = Edge("e1", freeElementA, v1, v2)
+    e2 = Edge("e2", freeElementB, v2, v3)
+    e3 = Edge("e3", freeElementC, v1, v3)
+    e4 = Edge("e4", freeElementD, v1, v1)
+    leg = Leg("l", v1)
+
+    C.addEdges({e1, e2, e3, e4})
+    C.addLeg(leg)
+    C.monoid = freeMonoid
+
+    automorphisms = list(BasicFamilyMorphism.getAutomorphismsIter(C))
+
+    # This family only possesses the identity automorphism
+    assert len(automorphisms) == 1
+    for auto in automorphisms:
+        for x in C.vertices | C.edges | C.legs:
+            assert auto(x) == x

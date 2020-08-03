@@ -1,5 +1,5 @@
 import itertools
-from typing import Any, Dict, Iterator, List, Set, TypeVar, Union
+from typing import Any, Dict, FrozenSet, Iterator, List, Set, TypeVar, Union
 
 from .BasicFamily import BasicFamily
 from .RPC import MonoidHomomorphism
@@ -75,7 +75,7 @@ class BasicFamilyMorphism(object):
     def _getFamilyMorphisms(
             domainFamily: BasicFamily,
             codomainFamily: BasicFamily,
-            pureGraphIso: Dict[Vertex, Vertex]) -> Set["BasicFamilyMorphism"]:
+            pureGraphIso: Dict[Vertex, Vertex]) -> List["BasicFamilyMorphism"]:
 
         assert isinstance(domainFamily, BasicFamily)
         assert isinstance(codomainFamily, BasicFamily)
@@ -89,10 +89,10 @@ class BasicFamilyMorphism(object):
             mappedRoot = pureGraphIso[leg.root]
             candidateLegs = {leg for leg in codomainFamily.legs if leg.root == mappedRoot and leg.marking == leg.marking}
             if len(candidateLegs) == 0:
-                return set()
+                return []
 
         # Any choice function from this dict will determine an isomorphism of basic families
-        partialIsomorphisms: Dict[Set[Vertex], List[Dict[Edge, Edge]]] = {}
+        partialIsomorphisms: Dict[FrozenSet[Vertex], List[Dict[Edge, Edge]]] = {}
 
         for v1, v2 in itertools.product(domainFamily.vertices, domainFamily.vertices):
             # Set of edges connecting v1 and v2
@@ -108,11 +108,11 @@ class BasicFamilyMorphism(object):
 
             # Get the set of all bijections from domainConnections to codomainConnections that preserve length
             lengthPreservingBijections = GraphIsoHelper.getFilteredBijections(domConByLength, codomConByLength)
-            partialIsomorphisms[{v1, v2}] = lengthPreservingBijections
+            partialIsomorphisms[frozenset({v1, v2})] = lengthPreservingBijections
 
         # Can't form any choice functions if one of our sets is empty
-        if set() in partialIsomorphisms:
-            return set()
+        if frozenset() in partialIsomorphisms:
+            return []
 
         A = TypeVar("A")
         B = TypeVar("B")
@@ -121,13 +121,13 @@ class BasicFamilyMorphism(object):
         # Set[Edge => Edge]. Any choice function for image(partialIsomorphisms) is essentially a function Edge => Edge,
         # and we collect all such things into a set.
         def _getProductDictionary(
-                current: Set[Dict[B, B]],
+                current: List[Dict[B, B]],
                 remaining: Dict[A, List[Dict[B, B]]]
-        ) -> Set[Dict[B, B]]:
+        ) -> List[Dict[B, B]]:
             if len(remaining) == 0:
                 return current
 
-            newFunctions: Set[Dict[B, B]] = set()
+            newFunctions: List[Dict[B, B]] = []
 
             keyToPop: A = list(remaining.keys())[0]
             partsToAssimilate: List[Dict[B, B]] = remaining.pop(keyToPop)
@@ -139,14 +139,14 @@ class BasicFamilyMorphism(object):
                         newFunc[b] = func[b]
                     for b in newPart:
                         newFunc[b] = newPart[b]
-                    newFunctions.add(newFunc)
+                    newFunctions.append(newFunc)
 
             return _getProductDictionary(newFunctions, remaining)
 
         # We now need to form the set of all choice functions / product...
-        edgeIsos: Set[Dict[Edge, Edge]] = _getProductDictionary(set({}), partialIsomorphisms)
+        edgeIsos: List[Dict[Edge, Edge]] = _getProductDictionary([{}], partialIsomorphisms)
 
-        basicFamilyIsos: Set["BasicFamilyMorphism"] = set()
+        basicFamilyIsos: List["BasicFamilyMorphism"] = []
         for edgeIso in edgeIsos:
             curveMorphismDict: Dict[GraphComponent, GraphComponent] = {}
 
@@ -165,9 +165,9 @@ class BasicFamilyMorphism(object):
             for gen in domainFamily.monoid.gens:
                 edge = [e for e in domainFamily.edges if e.length == domainFamily.monoid.Element({gen: 1})][0]
                 matrix[gen] = edgeIso[edge].length
-            monoidMorphism = MonoidHomomorphism(domainFamily, codomainFamily, matrix)
+            monoidMorphism = MonoidHomomorphism(domainFamily.monoid, codomainFamily.monoid, matrix)
 
-            basicFamilyIsos.add(BasicFamilyMorphism(domainFamily, codomainFamily, curveMorphismDict, monoidMorphism))
+            basicFamilyIsos.append(BasicFamilyMorphism(domainFamily, codomainFamily, curveMorphismDict, monoidMorphism))
 
         return basicFamilyIsos
 
