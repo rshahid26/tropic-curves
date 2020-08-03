@@ -1,8 +1,10 @@
 import itertools
-from typing import Dict, List, TypeVar
+from typing import Dict, Iterator, List, TypeVar
 
 from .BasicFamily import BasicFamily
 from .Vertex import Vertex
+
+VertexMap = Dict[Vertex, Vertex]
 
 
 class GraphIsoHelper(object):
@@ -69,7 +71,7 @@ class GraphIsoHelper(object):
     # 2. |A| = |B|,
     # this method produces a list of all bijections f: A -> B such that f \circ b = a.
     @staticmethod
-    def getFilteredBijections(a: Dict[A, S], b: Dict[A, S]) -> List[Dict[A, B]]:
+    def getFilteredBijections(a: Dict[A, S], b: Dict[B, S]) -> List[Dict[A, B]]:
         assert isinstance(a, dict)
         assert isinstance(b, dict)
 
@@ -96,7 +98,7 @@ class GraphIsoHelper(object):
     def checkIfBijectionIsIsomorphism(
             domain: BasicFamily,
             codomain: BasicFamily,
-            bijection: Dict[Vertex, Vertex]) -> bool:
+            bijection: VertexMap) -> bool:
 
         # print("Checking input list: ", [v.name for v in inputList])
         # print("With corresponding output list: ", [v.name for v in outputList])
@@ -121,25 +123,24 @@ class GraphIsoHelper(object):
         return True
 
     @staticmethod
-    def getIsomorphismsIter(domain, codomain):
-        from .BasicFamily import BasicFamily
+    def getIsomorphismsIter(domain: BasicFamily, codomain: BasicFamily) -> Iterator[VertexMap]:
         assert isinstance(domain, BasicFamily)
         assert isinstance(codomain, BasicFamily)
 
         domainVertexInfo = {v: domain.getCharacteristicOfVertex(v) for v in domain.vertices}
         codomainVertexInfo = {v: codomain.getCharacteristicOfVertex(v) for v in codomain.vertices}
-        bijections = GraphIsoHelper.getFilteredBijections(domainVertexInfo, codomainVertexInfo)
+        bijections: List[VertexMap] = GraphIsoHelper.getFilteredBijections(domainVertexInfo, codomainVertexInfo)
 
         return filter(lambda x: GraphIsoHelper.checkIfBijectionIsIsomorphism(domain, codomain, x), bijections)
 
     @staticmethod
-    def isBruteForceIsomorphicTo(domain, codomain):
+    def isBruteForceIsomorphicTo(domain: BasicFamily, codomain: BasicFamily) -> bool:
         for _ in GraphIsoHelper.getIsomorphismsIter(domain, codomain):
             return True
         return False
 
     @staticmethod
-    def isIsomorphicTo(domain, codomain):
+    def isIsomorphicTo(domain: BasicFamily, codomain: BasicFamily) -> bool:
         if domain.numEdges != codomain.numEdges:
             # print("Different Number of Edges")
             return False

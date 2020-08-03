@@ -1,6 +1,5 @@
 
-from Tropical2020.basic_families.BasicFamily import *
-from Tropical2020.basic_families.RPC import Monoid
+from Tropical2020.basic_families import *
 
 
 class CurveTests:
