@@ -9,6 +9,8 @@ from .Edge import Edge
 from .Leg import Leg
 from .Vertex import Vertex
 
+VertexCharacteristic = Tuple[int, int, int, int]
+
 
 # A Combinatorial Tropical Curve has a name, set of edges, and set of legs
 class BasicFamily(object):
@@ -47,7 +49,7 @@ class BasicFamily(object):
 
         # Variables for caching vertex characteristic counts
         self._vertexCharacteristicCacheValid: bool = False
-        self._vertexCharacteristicCache: Dict[Tuple[int, int, int, int], int] = {}
+        self._vertexCharacteristicCache: Dict[VertexCharacteristic, int] = {}
 
         # Variables for caching the core
         self._coreCacheValid: bool = False
@@ -630,7 +632,7 @@ class BasicFamily(object):
     # The characteristic of a vertex is invariant under isomorphism, so if two graphs have different
     # "vertexEverythingDict"s, then they are definitely not isomorphic.
     @property
-    def vertexCharacteristicCounts(self) -> Dict[Tuple[int, int, int, int], int]:
+    def vertexCharacteristicCounts(self) -> Dict[VertexCharacteristic, int]:
 
         """This dictionary keeps track of the number of vertices of a certain characteristic. Currently, the characteristic of a vertex v is a triple `(d_e, d_l, g, l)`, where 
         `d_e` is the edge degree of `v`.
@@ -674,8 +676,8 @@ class BasicFamily(object):
     # When brute-force checking for an isomorphism between two graphs, we only need to check bijections that preserve
     # corresponding characteristic blocks. (i.e., reduce the number of things to check from n! to
     # (n_1)! * (n_2)! * ... * (n_k)!, where n = n_1 + ... + n_k)
-    def getVerticesByCharacteristic(self) -> Dict[Tuple[int, int, int, int], List[Vertex]]:
-        vertexDict: Dict[Tuple[int, int, int, int], List[Vertex]] = {}
+    def getVerticesByCharacteristic(self) -> Dict[VertexCharacteristic, List[Vertex]]:
+        vertexDict: Dict[VertexCharacteristic, List[Vertex]] = {}
         for v in self.vertices:
             # Get the characteristic of v
             edgeDegree: int = self.edgeDegree(v)
