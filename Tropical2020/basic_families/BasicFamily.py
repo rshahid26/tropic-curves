@@ -3,11 +3,12 @@ from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import numpy as np  # type: ignore
 
-from .GraphIsoHelper import *
 from .RPC import *
 from .Edge import Edge
 from .Leg import Leg
 from .Vertex import Vertex
+
+VertexCharacteristic = Tuple[int, int, int, int]
 
 
 # A Combinatorial Tropical Curve has a name, set of edges, and set of legs
@@ -47,7 +48,7 @@ class BasicFamily(object):
 
         # Variables for caching vertex characteristic counts
         self._vertexCharacteristicCacheValid: bool = False
-        self._vertexCharacteristicCache: Dict[Tuple[int, int, int, int], int] = {}
+        self._vertexCharacteristicCache: Dict[VertexCharacteristic, int] = {}
 
         # Variables for caching the core
         self._coreCacheValid: bool = False
@@ -593,21 +594,35 @@ class BasicFamily(object):
     # Returns the set of all elements of the form (e, n), where e is an edge or leg, n is 1 or 2,
     # and the n^th endpoint of e is v
     def getEndpointsOfEdges(self, v: Vertex) -> Set[Tuple[Union[Leg, Edge], int]]:
+        """This function returns the set of all elements of the form ``(e,n)`` where ``e`` is an edge or leg, ``n`` is
+        1 or 2, and the ``n``th endpoint of ``e`` is ``v``.
+
+        Parameters
+        ----------
+        v : :class:`~Tropical2020.basic_families.Vertex.Vertex`
+            The vertex which will have edges calculated.
+
+        Returns
+        -------
+        set
+            The set of endpoints of edges at ``v``.
+        """
 
         endpoints: List[Tuple[Union[Leg, Edge], int]] = []
-
-        for e in self.edges:
-            if e.vert1 == v:
-                endpoints += [(e, 1)]
-            if e.vert2 == v:
-                endpoints += [(e, 2)]
+        endpoints += [(edge, 1) for edge in self.edges if edge.vert1 == v]
+        endpoints += [(edge, 2) for edge in self.edges if edge.vert2 == v]
 
         # By default, consider the root of a leg to be its first endpoint
-        for nextLeg in self.legs:
-            if nextLeg.root == v:
-                endpoints += [(nextLeg, 1)]
+        endpoints += [(leg, 1) for leg in self.legs if leg.root == v]
 
         return set(endpoints)
+
+    def getCharacteristicOfVertex(self, v):
+        edgeDegree = self.edgeDegree(v)
+        legDegree = self.legDegree(v)
+        g = v.genus
+        loops = sum(1 for e in self.edges if e.vertices == {v})
+        return edgeDegree, legDegree, g, loops
 
     # This dictionary keeps track of the number of vertices of a certain characteristic
     # Currently, the characteristic of a vertex v is a triple (d_e, d_l, g, l), where d_e is the edge degree of v,
@@ -615,17 +630,28 @@ class BasicFamily(object):
     # The characteristic of a vertex is invariant under isomorphism, so if two graphs have different
     # "vertexEverythingDict"s, then they are definitely not isomorphic.
     @property
-    def vertexCharacteristicCounts(self) -> Dict[Tuple[int, int, int, int], int]:
+    def vertexCharacteristicCounts(self) -> Dict[VertexCharacteristic, int]:
+        """Keeps track of the number of vertices of a certain characteristic.
+
+        Currently, the characteristic of a vertex ``v`` is a triple ``(d_e, d_l, g, l)``, where ``d_e`` is the edge
+        degree of ``v``, ``d_l`` is the leg degree of ``v``, and ``g`` is the genus of ``v``, and there are ``l`` loops
+        based at ``v``.
+
+        The characteristic of a vertex is invariant under isomorphism, so if two graphs have different
+        results for ``vertexCharacteristicCounts``, then they are not isomorphic.
+
+        Returns
+        -------
+        dict
+            A dictionary where the keys are vertices of a certain characteristic
+            and the values are the number of said vertices.
+        """
+
         # If the cached copy of the dictionary is invalid, then recalculate it.
         if not self._vertexCharacteristicCacheValid:
             self._vertexCharacteristicCache = {}
             for v in self.vertices:
-                # Calculate the characteristic of v
-                edgeDegree = self.edgeDegree(v)
-                legDegree = self.legDegree(v)
-                g = v.genus
-                loops = sum(1 for e in self.edges if e.vertices == {v})
-                key = (edgeDegree, legDegree, g, loops)
+                key = self.getCharacteristicOfVertex(v)
 
                 # Increase the count of that characteristic, or set it to 1 if not already seen
                 if key in self._vertexCharacteristicCache:
@@ -644,15 +670,10 @@ class BasicFamily(object):
     # When brute-force checking for an isomorphism between two graphs, we only need to check bijections that preserve
     # corresponding characteristic blocks. (i.e., reduce the number of things to check from n! to
     # (n_1)! * (n_2)! * ... * (n_k)!, where n = n_1 + ... + n_k)
-    def getVerticesByCharacteristic(self) -> Dict[Tuple[int, int, int, int], List[Vertex]]:
-        vertexDict: Dict[Tuple[int, int, int, int], List[Vertex]] = {}
+    def getVerticesByCharacteristic(self) -> Dict[VertexCharacteristic, List[Vertex]]:
+        vertexDict: Dict[VertexCharacteristic, List[Vertex]] = {}
         for v in self.vertices:
-            # Get the characteristic of v
-            edgeDegree: int = self.edgeDegree(v)
-            legDegree: int = self.legDegree(v)
-            g: int = v.genus
-            loops: int = sum(1 for e in self.edges if e.vertices == {v})
-            key = (edgeDegree, legDegree, g, loops)
+            key = self.getCharacteristicOfVertex(v)
 
             # Update that characteristic entry, or initialize it if not already present
             if key in vertexDict:
@@ -667,6 +688,7 @@ class BasicFamily(object):
 
     # Returns a list of all permutations of lst. A permutation of lst is itself a list.
     def getPermutations(self, lst: List[Any]) -> List[List[Any]]:
+        from .GraphIsoHelper import GraphIsoHelper
         return GraphIsoHelper.getPermutations(lst)
 
     # Checks if the given data constitutes an isomorphism from self to other.
@@ -674,25 +696,28 @@ class BasicFamily(object):
     # vertices of self and other with all blocks of the partitions nonempty. The bijection f recovered from this data
     # is as follows: for each key k, and each index of domainOrderingDict[k],
     # f(domainOrderingDict[k][i]) = codomainOrderingDict[k][i].
-    def checkIfBijectionIsIsomorphism(
-            self,
-            other: "BasicFamily",
-            domainOrderingDict: Dict[Any, List[Vertex]],
-            codomainOrderingDict: Dict[Any, List[Vertex]]) -> bool:
-        return GraphIsoHelper.checkIfBijectionIsIsomorphism(self, other, domainOrderingDict, codomainOrderingDict)
+    #def checkIfBijectionIsIsomorphism(
+    #        self,
+    #        other: "BasicFamily",
+    #        domainOrderingDict: Dict[Any, List[Vertex]],
+    #        codomainOrderingDict: Dict[Any, List[Vertex]]) -> bool:
+    #    return GraphIsoHelper.checkIfBijectionIsIsomorphism(self, other, domainOrderingDict, codomainOrderingDict)
 
     # permDict should have the property that for any choice function
     # f for the values of permDict, f(k_1) + ... + f(k_n) is a permutation of self.vertices, where k_1, ..., k_n are
     # the keys of permDict. Moreover, every permutation of self.vertices should arise in this manner.
     def getBijections(self, permDict: Dict[Any, List[List[Vertex]]]):
+        from .GraphIsoHelper import GraphIsoHelper
         return GraphIsoHelper.getBijections(permDict)
 
     # Checks all bijections that preserve characteristic
     def isBruteForceIsomorphicTo(self, other: "BasicFamily") -> bool:
+        from .GraphIsoHelper import GraphIsoHelper
         return GraphIsoHelper.isBruteForceIsomorphicTo(self, other)
 
     # Checks if some easy to check invariants are preserved, and then checks candidate bijections
     def isIsomorphicTo(self, other: "BasicFamily") -> bool:
+        from .GraphIsoHelper import GraphIsoHelper
         return GraphIsoHelper.isIsomorphicTo(self, other)
 
     # Simplifies names of vertices, edges, and legs in place.
@@ -989,108 +1014,3 @@ class BasicFamily(object):
             verticesToCheck = verticesToCheck | newAdjacentVertices
 
         return tree
-
-
-class BasicFamilyMorphism(object):
-    def __init__(self, domain, codomain, curveMorphismDict, monoidMorphism):
-
-        # Type checking
-        assert isinstance(domain, BasicFamily), "The domain of a basic family morphism should be a BasicFamily."
-        assert isinstance(codomain, BasicFamily), "The codomain of a basic family morphism should be a BasicFamily."
-        assert isinstance(curveMorphismDict, dict), \
-            "curveMorphismDict should be a Dictionary[domain.vertices, codomain.vertices]."
-        assert isinstance(monoidMorphism, MonoidHomomorphism), "monoidMorphism should be a MonoidHomomorphism."
-        assert monoidMorphism.domain == domain.monoid, \
-            "The domain of the monoid morphism should match the given domain."
-        assert monoidMorphism.codomain == codomain.monoid, \
-            "The codomain of the monoid morphism should match the given codomain."
-
-        self.domain = domain
-        self.codomain = codomain
-        self.curveMorphismDict = curveMorphismDict
-        self.monoidMorphism = monoidMorphism
-
-        # Make sure that the given curveMorphismDict is actually a function from domain to codomain...
-        assert set(curveMorphismDict.keys()) == domain.vertices | domain.edges | domain.legs, \
-            "The keys of curveMorphismDict should be the vertices, edges, and legs of the domain curve."
-        for vert in domain.vertices:
-            assert curveMorphismDict[vert] in codomain.vertices, \
-                "curveMorphismDict should map vertices to vertices of the codomain curve."
-        for nextEdge in domain.edges:
-            assert curveMorphismDict[nextEdge] in codomain.vertices | codomain.edges, \
-                "curveMorphismDict should map edges to vertices or edges of the codomain curve."
-        for nextLeg in domain.legs:
-            assert curveMorphismDict[nextLeg] in codomain.legs, \
-                "curveMorphismDict should map legs to legs of the codomain curve."
-
-        # Make sure that the given curveMorphismDict is actually a homomorphism...
-        for nextLeg in domain.legs:
-            assert curveMorphismDict[nextLeg.root] == curveMorphismDict[nextLeg].root, \
-                "curveMorphismDict should preserve leg roots."
-        for nextEdge in domain.edges:
-            if curveMorphismDict[nextEdge] in codomain.edges:
-                assert set(map(lambda v: curveMorphismDict[v], nextEdge.vertices)) == curveMorphismDict[nextEdge].vertices, \
-                    "curveMorphismDict should preserve endpoints of non-collapsed edges."
-                assert monoidMorphism(nextEdge.length) == curveMorphismDict[nextEdge].length, \
-                    "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
-            if curveMorphismDict[nextEdge] in codomain.vertices:
-                assert curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert1] and \
-                    curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert2], \
-                    "curveMorphismDict should preserve endpoints of collapsed edges."
-                assert monoidMorphism(nextEdge.length) == codomain.monoid.zero(), \
-                    "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
-        for vert in codomain.vertices:
-            assert self.preimage(vert).genus == vert.genus, \
-                "curveMorphismDict should preserve genus."
-
-    # Returns the preimage of the given vertex as a BasicFamily
-    def preimage(self, vert):
-        assert vert in self.codomain.vertices, "vert should be a codomain vertex"
-
-        preimageVertices = {v for v in self.domain.vertices if self.curveMorphismDict[v] == vert}
-        preimageEdges = {e for e in self.domain.edges if self.curveMorphismDict[e] == vert}
-
-        preimage = BasicFamily("Preimage of " + vert.name)
-        preimage.addEdges(preimageEdges)
-        preimage.addVertices(preimageVertices)
-
-        return preimage
-
-    # Returns the image of the morphism as a BasicFamily
-    def image(self):
-
-        # Note that we don't need to worry about edges that collapse to a vertex - their endpoints go to the same place.
-        imageVertices = {self(v) for v in self.domain.vertices}
-
-        # Only take edges that are not collapsed
-        imageEdges = {self(e) for e in self.domain.edges if self(e) in self.codomain.edges}
-
-        imageLegs = {self(nextLeg) for nextLeg in self.domain.legs}
-
-        # Keep the whole codomain monoid. Another option is to take the image of self.monoidMorphism, but this has not
-        # yet been implemented.
-        imageMonoid = self.codomain.monoid
-
-        image = BasicFamily("Image curve")
-
-        image.addVertices(imageVertices)
-        image.addEdges(imageEdges)
-        image.addLegs(imageLegs)
-        image.monoid = imageMonoid
-        
-        return image
-
-    def __call__(self, x):
-        if isinstance(x, Vertex):
-            assert x in self.domain.vertices, "The given input must be a domain vertex."
-            return self.curveMorphismDict[x]
-        elif isinstance(x, Edge):
-            assert x in self.domain.edges, "The given input must be a domain edge."
-            return self.curveMorphismDict[x]
-        elif isinstance(x, Leg):
-            assert x in self.domain.legs, "The given input must be a domain leg."
-            return self.curveMorphismDict[x]
-        elif isinstance(x, self.domain.monoid.Element):
-            return self.monoidMorphism(x)
-        else:
-            raise ValueError("Cannot call on the given input - not a reasonable type.")

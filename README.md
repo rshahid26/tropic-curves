@@ -31,6 +31,7 @@ as such. In order to run the tests, one can run `python3 -m Tropical2020.test.te
     |   |-- basic_families
     |   |   |-- __init__.py
     |   |   |-- BasicFamily.py
+    |   |   |-- BasicFamilyMorphism.py
     |   |   |-- Edge.py
     |   |   |-- GraphIsoHelper.py
     |   |   |-- Leg.py

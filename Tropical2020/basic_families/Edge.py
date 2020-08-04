@@ -16,6 +16,9 @@ class Edge(object):
         self.vert1: Vertex = vert1_
         self.vert2: Vertex = vert2_
 
+    def __str__(self):
+        return self.name
+
     @property
     def length(self):
         return self._length

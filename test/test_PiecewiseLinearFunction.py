@@ -1,5 +1,5 @@
 
-from Tropical2020.basic_families.PiecewiseLinearFunction import *
+from Tropical2020.basic_families import *
 
 
 class SPLFTests:

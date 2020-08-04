@@ -33,6 +33,9 @@ have a class representing a graph homomorphism. Then, refactor the isomorphism c
 5. Generate a family from any strata (previous two points)
 6. Find a good basis of morphisms to consider when checking if a PLF over a family is well-defined.
     1. Currently, all morphisms of the family are checked. Conjecture: Only a transitive basis is needed.
+7. Make the generation of moduli spaces more intelligent by reducing the number of isomorphic curves generated.
+    1. Examine the ancestry of a generated curve
+    2. Only specialize at a representative of each (automorphism) orbit.
 
 ## Graphics
 
