@@ -36,3 +36,33 @@ def test_example_3_5():
     for auto in automorphisms:
         for x in C.vertices | C.edges | C.legs:
             assert auto(x) == x
+
+def test_theta_curve():
+    C = BasicFamily("Theta Curve")
+
+    v1 = Vertex("Left", 0)
+    v2 = Vertex("Right", 0)
+
+    m = Monoid()
+    m.addgen("a")
+    a = m.Element({"a": 1})
+
+    e1 = Edge("top", a, v1, v2)
+    e2 = Edge("middle", a, v1, v2)
+    e3 = Edge("bottom", a, v1, v2)
+
+    C.monoid = m
+    C.addEdges({e1, e2, e3})
+
+    automorphisms = list(BasicFamilyMorphism.getAutomorphismsIter(C))
+
+
+    """    for auto in automorphisms:
+    print("\n\nPrinting an automorphism")
+    print(str(v1), " |-> ", str(auto(v1)))
+    print(str(v2), " |-> ", str(auto(v2)))
+    print(str(e1), " |-> ", str(auto(e1)))
+    print(str(e2), " |-> ", str(auto(e2)))
+    print(str(e3), " |-> ", str(auto(e3)))"""
+
+    assert len(automorphisms) == 6
