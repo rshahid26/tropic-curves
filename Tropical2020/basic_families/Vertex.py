@@ -8,6 +8,9 @@ class Vertex(object):
         self.name: str = name_
         self._genus: int = genus_
 
+    def __str__(self):
+        return self.name
+
     @property
     def genus(self) -> int:
         return self._genus
