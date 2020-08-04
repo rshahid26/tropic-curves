@@ -3,14 +3,10 @@ from Tropical2020.basic_families import *
 # Set up a free monoid for sake of convenience
 from Tropical2020.basic_families.GraphIsoHelper import GraphIsoHelper
 
-freeMonoid = Monoid()
-freeMonoid.addgen("a")
+freeMonoid = Monoid(["a", "b", "c", "d"])
 freeElementA = freeMonoid.Element({"a": 1})
-freeMonoid.addgen("b")
 freeElementB = freeMonoid.Element({"b": 1})
-freeMonoid.addgen("c")
 freeElementC = freeMonoid.Element({"c": 1})
-freeMonoid.addgen("d")
 freeElementD = freeMonoid.Element({"d": 1})
 
 
@@ -46,8 +42,7 @@ def test_theta_curve():
     v1 = Vertex("Left", 0)
     v2 = Vertex("Right", 0)
 
-    m = Monoid()
-    m.addgen("a")
+    m = Monoid(["a"])
     a = m.Element({"a": 1})
 
     e1 = Edge("top", a, v1, v2)

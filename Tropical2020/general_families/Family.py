@@ -1,7 +1,7 @@
 from typing import Any, Dict, Iterator, Set, Tuple
 
 from ..basic_families.BasicFamily import BasicFamily
-from ..basic_families.BasicFamily import BasicFamilyMorphism
+from ..basic_families.BasicFamilyMorphism import BasicFamilyMorphism
 from ..basic_families.RPC import MonoidHomomorphism
 
 
