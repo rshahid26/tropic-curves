@@ -14,6 +14,22 @@ class GraphIsoHelper(object):
 
     @staticmethod
     def getPermutations(lst: List[A]) -> List[List[A]]:
+        """Returns the list of all permutations of the input list.
+
+        A "permutation" of a list ``lst`` is any list with the same elements as ``lst``, but perhaps with a different
+        order.
+
+        Parameters
+        ----------
+        lst : List[A]
+            The list of which to calculate permutations.
+
+        Returns
+        -------
+        List[List[A]]
+            The list of all permutations of ``lst``.
+        """
+
         # If lst is empty then there are no permutations
         if len(lst) == 0:
             return []
@@ -46,17 +62,35 @@ class GraphIsoHelper(object):
     # 2. c \circ permDict is a bijection
     # Intended type of this function is (A => List[B]) => List[A => B]
     @staticmethod
-    def getBijections(permDict: Dict[A, List[B]]) -> List[Dict[A, B]]:
+    def getBijections(candidates: Dict[A, List[B]]) -> List[Dict[A, B]]:
+        """Returns a list of all bijections compatible with ``candidates``.
 
-        if len(permDict) == 0:
+        For a function ``f`` to be compatible with ``candidates``, we mean there exists a function ``c`` such
+        that
+        * ``c`` is a choice function for the image of ``candidates``, and
+        * ``f`` is the composition of ``c`` with ``candidates``.
+        This function collects all compatible bijections into a list and returns them.
+
+        Parameters
+        ----------
+        candidates : Dict[A, List[B]]
+            The function determining compatible bijections.
+
+        Returns
+        -------
+        List[Dict[A, B]]
+            A list of all bijections compatible with ``candidates``.
+        """
+
+        if len(candidates) == 0:
             return [{}]
 
         # Choose an input to process at this stage of recursion
-        nextInput = list(permDict.keys())[0]
-        candidateValues: List[B] = permDict.pop(nextInput)
+        nextInput = list(candidates.keys())[0]
+        candidateValues: List[B] = candidates.pop(nextInput)
 
         # Process the rest of the inputs
-        partialFunctions: List[Dict[A, B]] = GraphIsoHelper.getBijections(permDict)
+        partialFunctions: List[Dict[A, B]] = GraphIsoHelper.getBijections(candidates)
 
         # Start incorporating our chosen input into what we've already processed
 
@@ -81,29 +115,52 @@ class GraphIsoHelper(object):
     # Given functions a: A -> S and b: B -> S such that...
     # 1. a and b are surjections, and
     # 2. |A| = |B|,
-    # this method produces a list of all bijections f: A -> B such that f \circ b = a.
+    # this method produces a list of all bijections f: A -> B such that b \circ f = a.
     @staticmethod
     def getFilteredBijections(a: Dict[A, S], b: Dict[B, S]) -> List[Dict[A, B]]:
+        """Returns a list of all bijections filtered by ``a`` and ``b``.
+
+        For a function ``f`` to be filtered by ``a`` and ``b``, we mean that the composition of ``b`` with ``f``
+        equals ``a``. For example, if ``a`` and ``b`` are functions mapping edges to their length, then any bijection
+        filtered by ``a`` and ``b`` preserves edge length.
+
+        Parameters
+        ----------
+        a : Dict[A, S]
+            A function associating data to domain values.
+        b : Dict[B, S]
+            A function associating data to codomain values.
+
+        Returns
+        -------
+        List[Dict[A, B]]
+            A list of all bijections filtered by ``a`` and ``b``.
+        """
+
+        # Runtime type checking
         assert isinstance(a, dict)
         assert isinstance(b, dict)
 
+        # Ensure that ``a`` and ``b`` have the same image (good enough substitution for surjectivity)
         if set(a.values()) != set(b.values()):
             return []
 
+        # Ensure that there are any bijections at all
         domA = set(a.keys())
         domB = set(b.keys())
         if len(domA) != len(domB):
             return []
 
+        # Prepare the preimage of B for use with ``getBijections``
         preimageOfB: Dict[S, List[B]] = {}
         for v in b.values():
             preimageOfB[v] = [k for k in b if b[k] == v]
 
         # Compose the preimage of b with a
         # This maps from A to Powerset(B)
-        permDict = {k: preimageOfB[a[k]] for k in a}
+        candidates = {k: preimageOfB[a[k]] for k in a}
 
-        return GraphIsoHelper.getBijections(permDict)
+        return GraphIsoHelper.getBijections(candidates)
 
     # Checks if a bijection: domain.vertices -> codomain.vertices is an isomorphism
     @staticmethod
@@ -111,6 +168,23 @@ class GraphIsoHelper(object):
             domain: BasicFamily,
             codomain: BasicFamily,
             bijection: VertexMap) -> bool:
+        """Determines whether or not a supplied map of vertices is an isomorphism of pure graphs.
+
+        Parameters
+        ----------
+        domain : BasicFamily
+            The desired domain.
+        codomain : BasicFamily
+            The desired codomain.
+        bijection : Dict[Vertex, Vertex]
+            The bijection to be tested.
+
+        Returns
+        -------
+        bool
+            Whether or not ``bijection`` is an isomorphism of pure graphs with domain ``domain``
+            and codomain ``codomain``.
+        """
 
         # print("Checking input list: ", [v.name for v in inputList])
         # print("With corresponding output list: ", [v.name for v in outputList])
@@ -136,6 +210,23 @@ class GraphIsoHelper(object):
 
     @staticmethod
     def getIsomorphismsIter(domain: BasicFamily, codomain: BasicFamily) -> Iterator[VertexMap]:
+        """Returns an iterator of all isomorphisms from ``domain`` to ``codomain``.
+
+        The isomorphisms are encoded as vertex maps. All bijections from ``domain`` to ``codomain`` (filtered by vertex
+        characteristic) are computed at the time of calling, but the isomorphism check is only performed when the
+        iterator produces elements.
+
+        Parameters
+        ----------
+        domain : BasicFamily
+        codomain : BasicFamily
+
+        Returns
+        -------
+        Iterator[Dict[Vertex, Vertex]]
+            An iterator of all isomorphisms from ``domain`` to ``codomain``.
+        """
+
         assert isinstance(domain, BasicFamily)
         assert isinstance(codomain, BasicFamily)
 
@@ -147,12 +238,49 @@ class GraphIsoHelper(object):
 
     @staticmethod
     def isBruteForceIsomorphicTo(domain: BasicFamily, codomain: BasicFamily) -> bool:
+        """Checks by brute force whether or not ``domain`` is isomorphic (as a pure graph) to ``codomain``.
+
+        Produces all bijections from ``domain`` to ``codomain`` (filtered by vertex characteristic)
+        and then checks whether or not any of the bijections are isomorphisms.
+
+        Parameters
+        ----------
+        domain : BasicFamily
+        codomain : BasicFamily
+
+        Returns
+        -------
+        bool
+            Whether or not the given families are isomorphic.
+        """
+
         for _ in GraphIsoHelper.getIsomorphismsIter(domain, codomain):
             return True
         return False
 
     @staticmethod
     def isIsomorphicTo(domain: BasicFamily, codomain: BasicFamily) -> bool:
+        """Checks whether or not ``domain`` is isomorphic (as a pure graph) to ``codomain``.
+
+        This function first checks the following heuristics in order:
+        * The number of edges of each family.
+        * The number of vertices of each family.
+        * The number of vertices of each characteristic. See
+            :func:`~Tropical2020.basic_families.BasicFamily.BasicFamily.getCharacteristicOfVertex`.
+        If all such tests fail, then the function checks, by brute force, whether any bijection filtered by
+        vertex characteristic is an isomorphism of pure graphs.
+
+        Parameters
+        ----------
+        domain : BasicFamily
+        codomain : BasicFamily
+
+        Returns
+        -------
+        bool
+            Whether or not the given families are isomorphic.
+        """
+
         if domain.numEdges != codomain.numEdges:
             # print("Different Number of Edges")
             return False
