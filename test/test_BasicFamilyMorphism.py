@@ -1,6 +1,8 @@
 from Tropical2020.basic_families import *
 
 # Set up a free monoid for sake of convenience
+from Tropical2020.basic_families.GraphIsoHelper import GraphIsoHelper
+
 freeMonoid = Monoid()
 freeMonoid.addgen("a")
 freeElementA = freeMonoid.Element({"a": 1})
@@ -58,3 +60,7 @@ def test_theta_curve():
     automorphisms = list(BasicFamilyMorphism.getAutomorphismsIter(C))
 
     assert len(automorphisms) == 12
+
+    for auto in automorphisms:
+        assert GraphIsoHelper.isIsomorphicTo(C, auto.image())
+        assert len(auto.preimage(v1).vertices) == 1
