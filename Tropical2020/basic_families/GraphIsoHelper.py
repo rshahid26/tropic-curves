@@ -67,8 +67,11 @@ class GraphIsoHelper(object):
 
         For a function ``f`` to be compatible with ``candidates``, we mean there exists a function ``c`` such
         that
-        * ``c`` is a choice function for the image of ``candidates``, and
-        * ``f`` is the composition of ``c`` with ``candidates``.
+
+        - ``c`` is a choice function for the image of ``candidates``, and
+
+        - ``f`` is the composition of ``c`` with ``candidates``.
+
         This function collects all compatible bijections into a list and returns them.
 
         Parameters
@@ -263,10 +266,14 @@ class GraphIsoHelper(object):
         """Checks whether or not ``domain`` is isomorphic (as a pure graph) to ``codomain``.
 
         This function first checks the following heuristics in order:
-        * The number of edges of each family.
-        * The number of vertices of each family.
-        * The number of vertices of each characteristic. See
-            :func:`~Tropical2020.basic_families.BasicFamily.BasicFamily.getCharacteristicOfVertex`.
+
+        1. The number of edges of each family.
+
+        2. The number of vertices of each family.
+
+        3. The number of vertices of each characteristic. See
+           :func:`~Tropical2020.basic_families.BasicFamily.BasicFamily.getCharacteristicOfVertex`.
+
         If all such tests fail, then the function checks, by brute force, whether any bijection filtered by
         vertex characteristic is an isomorphism of pure graphs.
 
