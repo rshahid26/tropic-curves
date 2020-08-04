@@ -44,27 +44,39 @@ class GraphIsoHelper(object):
     # functions of the form c \circ permDict: A \to B such that...
     # 1. c is a choice function for image(permDict)
     # 2. c \circ permDict is a bijection
+    # Intended type of this function is (A => List[B]) => List[A => B]
     @staticmethod
     def getBijections(permDict: Dict[A, List[B]]) -> List[Dict[A, B]]:
 
         if len(permDict) == 0:
             return [{}]
 
-        nextKey = list(permDict.keys())[0]
-        permsOfThatKey = permDict.pop(nextKey)
-        remaining = GraphIsoHelper.getBijections(permDict)
+        # Choose an input to process at this stage of recursion
+        nextInput = list(permDict.keys())[0]
+        candidateValues: List[B] = permDict.pop(nextInput)
 
-        perms = []
+        # Process the rest of the inputs
+        partialFunctions: List[Dict[A, B]] = GraphIsoHelper.getBijections(permDict)
 
-        for perm in permsOfThatKey:
-            for subPerm in remaining:
-                # Taking the union of dictionaries in python is next to impossible to do nicely :(
-                newDict = {nextKey: perm}
-                for k in subPerm:
-                    newDict[k] = subPerm[k]
-                perms.append(newDict)
-        return perms
-    #todo: Make this actually return bijections!!!
+        # Start incorporating our chosen input into what we've already processed
+
+        # Successful combinations of ``partialFunctions`` with choices from our ``candidateValues`` for ``nextInput``
+        expandedFunctions: List[Dict[A, B]] = []
+
+        for funcVal in candidateValues:
+            for partialFunc in partialFunctions:
+                # ``nextInput |-> funcVal`` is compatible only if ``funcVal`` has not already been used by
+                # ``partialFunc``. We may throw away this partial function in higher recursion steps, but for now
+                # it's a safe choice.
+                if funcVal not in partialFunc.values():
+                    # Take the union of {nextInput: funcVal} and partialFunc
+                    expandedFunction: Dict[A, B] = {nextInput: funcVal}
+                    for k in partialFunc:
+                        expandedFunction[k] = partialFunc[k]
+
+                    expandedFunctions.append(expandedFunction)
+
+        return expandedFunctions
 
     # Given functions a: A -> S and b: B -> S such that...
     # 1. a and b are surjections, and
