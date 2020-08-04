@@ -37,6 +37,7 @@ def test_example_3_5():
         for x in C.vertices | C.edges | C.legs:
             assert auto(x) == x
 
+
 def test_theta_curve():
     C = BasicFamily("Theta Curve")
 
@@ -56,13 +57,4 @@ def test_theta_curve():
 
     automorphisms = list(BasicFamilyMorphism.getAutomorphismsIter(C))
 
-
-    """    for auto in automorphisms:
-    print("\n\nPrinting an automorphism")
-    print(str(v1), " |-> ", str(auto(v1)))
-    print(str(v2), " |-> ", str(auto(v2)))
-    print(str(e1), " |-> ", str(auto(e1)))
-    print(str(e2), " |-> ", str(auto(e2)))
-    print(str(e3), " |-> ", str(auto(e3)))"""
-
-    assert len(automorphisms) == 6
+    assert len(automorphisms) == 12
