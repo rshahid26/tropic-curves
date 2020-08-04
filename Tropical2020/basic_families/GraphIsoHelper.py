@@ -5,13 +5,12 @@ from .BasicFamily import BasicFamily
 from .Vertex import Vertex
 
 VertexMap = Dict[Vertex, Vertex]
+A = TypeVar("A")
+B = TypeVar("B")
+S = TypeVar("S")
 
 
 class GraphIsoHelper(object):
-
-    A = TypeVar("A")
-    B = TypeVar("B")
-    S = TypeVar("S")
 
     @staticmethod
     def getPermutations(lst: List[A]) -> List[List[A]]:
@@ -65,6 +64,7 @@ class GraphIsoHelper(object):
                     newDict[k] = subPerm[k]
                 perms.append(newDict)
         return perms
+    #todo: Make this actually return bijections!!!
 
     # Given functions a: A -> S and b: B -> S such that...
     # 1. a and b are surjections, and
@@ -78,12 +78,12 @@ class GraphIsoHelper(object):
         if set(a.values()) != set(b.values()):
             return []
 
-        A = set(a.keys())
-        B = set(b.keys())
-        if len(A) != len(B):
+        domA = set(a.keys())
+        domB = set(b.keys())
+        if len(domA) != len(domB):
             return []
 
-        preimageOfB = {}
+        preimageOfB: Dict[S, List[B]] = {}
         for v in b.values():
             preimageOfB[v] = [k for k in b if b[k] == v]
 
