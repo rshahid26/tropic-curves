@@ -23,7 +23,7 @@ class Family(object):
         self.morphisms = morphisms
 
     # Returns the set of ancestors of the given basic family
-    def getAncestors(self, basicFamily: BasicFamily) -> Set[BasicFamily]:
+    def getParents(self, basicFamily: BasicFamily) -> Set[BasicFamily]:
 
         # Type checking
         assert isinstance(basicFamily, BasicFamily)
@@ -35,6 +35,41 @@ class Family(object):
 
         # Get the set of domains of the morphisms that map into the given basic family
         return {arrow.domain for arrow in incomingArrows}
+
+    def getAncestors(self, basicFamily: BasicFamily) -> Set[BasicFamily]:
+        """Returns any basic family in the general family which is a generalization of ``basicFamily``.
+
+        Parameters
+        ----------
+        basicFamily : BasicFamily
+            The basic family whose ancestors will be found.
+
+        Returns
+        -------
+        set
+            The ancestors of ``basicFamily``.
+        """
+
+        # Will be filled with all ancestors of ``basicFamily``
+        ancestors: Set[BasicFamily] = set()
+        # Set of basic families of which we need to look for ancestors
+        basicFamiliesToCheck: Set[BasicFamily] = {basicFamily}
+
+        # While we're still looking for new ancestors...
+        while basicFamiliesToCheck:
+
+            # nextAncestors = basicFamiliesToCheck.flatmap(self.getParents)
+            nextAncestors: Set[BasicFamily] = set()
+            for fam in basicFamiliesToCheck:
+                nextAncestors |= self.getParents(fam)
+
+            # Only check the ancestors that are new
+            basicFamiliesToCheck = nextAncestors - ancestors
+
+            # Add the new ancestors
+            ancestors |= basicFamiliesToCheck
+
+        return ancestors
 
     # Returns the maximal ancestors of the given basic family
     def getMaximalAncestors(self, basicFamily: BasicFamily) -> Set[BasicFamily]:
