@@ -355,19 +355,19 @@ class TropicalModuliSpace(object):
             for curveString in curveStrings:
                 curveInfo = curveString.split("\n")
                 vertexInfo = curveInfo[0]
-                vertexInfoFinder = re.compile("\((v\d*) with genus (\d*)\)")
+                vertexInfoFinder = re.compile(r"\((v\d*) with genus (\d*)\)")
 
                 edgeInfo = curveInfo[1]
-                edgeInfoFinder = re.compile("edge\((v\d*), (v\d*)\)")
+                edgeInfoFinder = re.compile(r"edge\((v\d*), (v\d*)\)")
 
                 legInfo = curveInfo[2]
-                legInfoFinder = re.compile("leg\((v\d*)\)")
+                legInfoFinder = re.compile(r"leg\((v\d*)\)")
 
                 curveIdInfo = curveInfo[3]
-                curveIdInfoFinder = re.compile("Curve ID Number: (\d*)$")
+                curveIdInfoFinder = re.compile(r"Curve ID Number: (\d*)$")
 
                 contractionInfo = curveInfo[4]
-                contractionInfoFinder = re.compile("\(edge\((v\d*), (v\d*)\), curve (\d*)\)")
+                contractionInfoFinder = re.compile(r"\(edge\((v\d*), (v\d*)\), curve (\d*)\)")
 
                 c = BasicFamily("")
                 c.monoid = Monoid()
