@@ -1,4 +1,3 @@
-from Tropical2020.basic_families import *
 from Tropical2020.general_families import *
 import time
 import cProfile
@@ -52,7 +51,6 @@ with open('output.txt', 'a') as f:
 
     f.write(f"M-{GENUS}-{N}")
     f.writelines(string_buffer.getvalue().splitlines(True)[1:])
-
 
 
 # turn graphs to english:
