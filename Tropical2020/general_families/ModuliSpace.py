@@ -1,3 +1,5 @@
+import time
+
 from ..basic_families.BasicFamily import *
 import re
 
@@ -179,7 +181,7 @@ class TropicalModuliSpace(object):
             # Anticipate some isomorphic results - (S, T) and (T, S) produce the same splitting specialization
             endpointPartitions = [(S, T) for (S, T) in endpointPartitions if len(S) <= len(T)]
 
-            # Iterate over the possible genuses of the split vertices
+            # Iterate over the possible genera of the split vertices
             for g in range(vert.genus + 1):
                 for p in endpointPartitions:
                     S, T = p
@@ -196,9 +198,8 @@ class TropicalModuliSpace(object):
                 newCurves.append(c)
                 self.addCurve(c)
 
-        #print("Found ", len(newCurves), " new curves")
-        #print("Currently have ", len(self.curves), " curves!")
-
+        # print("Found ", len(newCurves), " new curves")
+        # print("Currently have ", len(self.curves), " curves!")
         # Specialize the specializations DFS - Moduli Spaces have a wide DAG structure (under the contraction relation)
         for c in newCurves:
             self.addSpecializationsDFS(c)
@@ -206,8 +207,6 @@ class TropicalModuliSpace(object):
     # Generates M_{g, n}. To do so, start with the unique n-marked curve of genus g without any edges, and add its
     # specializations.
     def generateSpaceDFS(self):
-
-        # start_time = time.time()
 
         # Manually check to see if the space is empty.
         if self._g == 0 and self._n < 3:
@@ -223,10 +222,6 @@ class TropicalModuliSpace(object):
         # Let the seed grow!
         self.addCurve(seedCurve)
         self.addSpecializationsDFS(seedCurve)
-
-        # generation_complete_time = time.time()
-
-        # print("Generation time: ", generation_complete_time - start_time)
 
     # For each curve in the space, and each edge of the curve, identify what curve in the space is isomorphic to the
     # contraction by that edge.

@@ -382,7 +382,7 @@ class BasicFamily(object):
         return set(endpoints)
 
     # This dictionary keeps track of the number of vertices of a certain characteristic
-    # Currently, the characteristic of a vertex v is a triple (d_e, d_l, g, l), where d_e is the edge degree of v,
+    # Currently, the characteristic of a vertex v is (d_e, d_l, g, l), where d_e is the edge degree of v,
     # d_l is the leg degree of v, and g is the genus of v, and there are l loops based at v.
     # The characteristic of a vertex is invariant under isomorphism, so if two graphs have different
     # "vertexEverythingDict"s, then they are definitely not isomorphic.

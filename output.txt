@@ -1,0 +1,312 @@
+M-1-1
+         278 function calls (275 primitive calls) in 0.000 seconds
+
+   Ordered by: internal time
+   List reduced from 76 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+      2/1    0.000    0.000    0.000    0.000 ModuliSpace.py:162(addSpecializationsDFS)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.exec}
+        8    0.000    0.000    0.000    0.000 copy.py:66(copy)
+      4/2    0.000    0.000    0.000    0.000 ModuliSpace.py:41(getPartitions)
+        1    0.000    0.000    0.000    0.000 ModuliSpace.py:209(generateSpaceDFS)
+        1    0.000    0.000    0.000    0.000 ModuliSpace.py:309(specializeByReducingGenus)
+        3    0.000    0.000    0.000    0.000 RPC.py:15(__init__)
+        3    0.000    0.000    0.000    0.000 RPC.py:29(Element)
+        2    0.000    0.000    0.000    0.000 ModuliSpace.py:145(addCurve)
+        2    0.000    0.000    0.000    0.000 {method '__reduce_ex__' of 'object' objects}
+        1    0.000    0.000    0.000    0.000 ModuliSpace.py:334(getGenusReductionSpecialization)
+        2    0.000    0.000    0.000    0.000 copyreg.py:113(_slotnames)
+        1    0.000    0.000    0.000    0.000 BasicFamily.py:276(getFullyShallowCopy)
+        3    0.000    0.000    0.000    0.000 RPC.py:121(compute_dual)
+
+
+M-1-2
+         3293 function calls (3262 primitive calls) in 0.002 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       11    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+       11    0.000    0.000    0.000    0.000 RPC.py:29(Element)
+       74    0.000    0.000    0.000    0.000 copy.py:66(copy)
+      202    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+      5/1    0.000    0.000    0.002    0.002 ModuliSpace.py:162(addSpecializationsDFS)
+     22/8    0.000    0.000    0.000    0.000 ModuliSpace.py:41(getPartitions)
+        9    0.000    0.000    0.001    0.000 BasicFamily.py:276(getFullyShallowCopy)
+        5    0.000    0.000    0.000    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+        7    0.000    0.000    0.000    0.000 ModuliSpace.py:260(specializeBySplittingAtVertex)
+       36    0.000    0.000    0.000    0.000 BasicFamily.py:85(addVertices)
+       36    0.000    0.000    0.000    0.000 BasicFamily.py:268(edgeDegree)
+       10    0.000    0.000    0.000    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+      180    0.000    0.000    0.000    0.000 Edge.py:25(vertices)
+       18    0.000    0.000    0.000    0.000 BasicFamily.py:389(vertexCharacteristicCounts)
+      353    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+
+
+M-1-3
+         21970 function calls (21802 primitive calls) in 0.013 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     1816    0.001    0.000    0.003    0.000 {built-in method builtins.sum}
+       33    0.001    0.000    0.002    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+      434    0.001    0.000    0.001    0.000 copy.py:66(copy)
+     2149    0.000    0.000    0.000    0.000 Edge.py:25(vertices)
+       43    0.000    0.000    0.004    0.000 BasicFamily.py:276(getFullyShallowCopy)
+       45    0.000    0.000    0.001    0.000 {built-in method builtins.__build_class__}
+      232    0.000    0.000    0.001    0.000 BasicFamily.py:85(addVertices)
+      290    0.000    0.000    0.001    0.000 BasicFamily.py:268(edgeDegree)
+       66    0.000    0.000    0.002    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+     11/1    0.000    0.000    0.013    0.013 ModuliSpace.py:162(addSpecializationsDFS)
+      390    0.000    0.000    0.000    0.000 GraphIsoHelper.py:69(<genexpr>)
+      390    0.000    0.000    0.000    0.000 GraphIsoHelper.py:70(<genexpr>)
+       39    0.000    0.000    0.001    0.000 ModuliSpace.py:260(specializeBySplittingAtVertex)
+    73/24    0.000    0.000    0.000    0.000 ModuliSpace.py:41(getPartitions)
+      124    0.000    0.000    0.001    0.000 BasicFamily.py:389(vertexCharacteristicCounts)
+
+
+M-2-0
+         4257 function calls (4218 primitive calls) in 0.003 seconds
+
+   Ordered by: internal time
+   List reduced from 98 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      288    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+       15    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+       87    0.000    0.000    0.000    0.000 copy.py:66(copy)
+      7/1    0.000    0.000    0.003    0.003 ModuliSpace.py:162(addSpecializationsDFS)
+       15    0.000    0.000    0.000    0.000 RPC.py:29(Element)
+        7    0.000    0.000    0.000    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+       13    0.000    0.000    0.001    0.000 BasicFamily.py:276(getFullyShallowCopy)
+    25/11    0.000    0.000    0.000    0.000 ModuliSpace.py:41(getPartitions)
+       52    0.000    0.000    0.000    0.000 BasicFamily.py:268(edgeDegree)
+      342    0.000    0.000    0.000    0.000 Edge.py:25(vertices)
+       14    0.000    0.000    0.000    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+        8    0.000    0.000    0.000    0.000 ModuliSpace.py:260(specializeBySplittingAtVertex)
+       22    0.000    0.000    0.000    0.000 BasicFamily.py:389(vertexCharacteristicCounts)
+       31    0.000    0.000    0.000    0.000 BasicFamily.py:85(addVertices)
+       29    0.000    0.000    0.000    0.000 copy.py:259(_reconstruct)
+
+
+M-2-1
+         26622 function calls (26436 primitive calls) in 0.016 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     2106    0.001    0.000    0.004    0.000 {built-in method builtins.sum}
+       38    0.001    0.000    0.003    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+     3406    0.001    0.000    0.001    0.000 Edge.py:25(vertices)
+      474    0.001    0.000    0.002    0.000 copy.py:66(copy)
+       55    0.001    0.000    0.001    0.000 {built-in method builtins.__build_class__}
+      507    0.001    0.000    0.001    0.000 GraphIsoHelper.py:69(<genexpr>)
+      340    0.001    0.000    0.001    0.000 BasicFamily.py:268(edgeDegree)
+       53    0.001    0.000    0.005    0.000 BasicFamily.py:276(getFullyShallowCopy)
+      507    0.001    0.000    0.001    0.000 GraphIsoHelper.py:70(<genexpr>)
+     16/1    0.000    0.000    0.016    0.016 ModuliSpace.py:162(addSpecializationsDFS)
+       76    0.000    0.000    0.002    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+      221    0.000    0.000    0.001    0.000 BasicFamily.py:85(addVertices)
+    94/35    0.000    0.000    0.000    0.000 ModuliSpace.py:41(getPartitions)
+      174    0.000    0.000    0.002    0.000 BasicFamily.py:389(vertexCharacteristicCounts)
+       42    0.000    0.000    0.001    0.000 ModuliSpace.py:260(specializeBySplittingAtVertex)
+
+
+M-2-2
+         247148 function calls (245518 primitive calls) in 0.138 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    20240    0.010    0.000    0.042    0.000 {built-in method builtins.sum}
+    41682    0.009    0.000    0.009    0.000 Edge.py:25(vertices)
+      402    0.008    0.000    0.033    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+     5312    0.007    0.000    0.010    0.000 GraphIsoHelper.py:69(<genexpr>)
+     5315    0.007    0.000    0.009    0.000 GraphIsoHelper.py:70(<genexpr>)
+     3613    0.005    0.000    0.011    0.000 copy.py:66(copy)
+     3007    0.004    0.000    0.013    0.000 BasicFamily.py:268(edgeDegree)
+      590    0.004    0.000    0.022    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+      328    0.004    0.000    0.034    0.000 BasicFamily.py:276(getFullyShallowCopy)
+     2050    0.003    0.000    0.084    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+     2286    0.003    0.000    0.005    0.000 BasicFamily.py:426(<genexpr>)
+     1881    0.003    0.000    0.010    0.000 BasicFamily.py:85(addVertices)
+      330    0.003    0.000    0.005    0.000 {built-in method builtins.__build_class__}
+    20922    0.003    0.000    0.003    0.000 BasicFamily.py:144(edges)
+     2530    0.003    0.000    0.012    0.000 BasicFamily.py:389(vertexCharacteristicCounts)
+
+
+M-2-3
+         1762208 function calls (1750388 primitive calls) in 0.927 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   372056    0.075    0.000    0.075    0.000 Edge.py:25(vertices)
+   143620    0.065    0.000    0.340    0.000 {built-in method builtins.sum}
+    40093    0.062    0.000    0.088    0.000 GraphIsoHelper.py:69(<genexpr>)
+    40260    0.061    0.000    0.086    0.000 GraphIsoHelper.py:70(<genexpr>)
+     3430    0.056    0.000    0.276    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+    19852    0.030    0.000    0.649    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+     3554    0.030    0.000    0.166    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+    20115    0.029    0.000    0.083    0.000 BasicFamily.py:268(edgeDegree)
+    16294    0.026    0.000    0.041    0.000 BasicFamily.py:426(<genexpr>)
+    19705    0.025    0.000    0.056    0.000 copy.py:66(copy)
+     1489    0.021    0.000    0.177    0.000 BasicFamily.py:276(getFullyShallowCopy)
+   158735    0.021    0.000    0.021    0.000 BasicFamily.py:144(edges)
+    41446    0.020    0.000    0.029    0.000 BasicFamily.py:242(numEdges)
+    39704    0.019    0.000    0.028    0.000 BasicFamily.py:238(numVertices)
+    10933    0.017    0.000    0.057    0.000 BasicFamily.py:85(addVertices)
+
+
+M-3-0
+         161591 function calls (160047 primitive calls) in 0.093 seconds
+
+   Ordered by: internal time
+   List reduced from 98 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    33409    0.008    0.000    0.008    0.000 Edge.py:25(vertices)
+    13333    0.006    0.000    0.031    0.000 {built-in method builtins.sum}
+     4054    0.006    0.000    0.008    0.000 GraphIsoHelper.py:69(<genexpr>)
+     4093    0.005    0.000    0.008    0.000 GraphIsoHelper.py:70(<genexpr>)
+      361    0.005    0.000    0.025    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+     2223    0.003    0.000    0.007    0.000 copy.py:66(copy)
+     1916    0.003    0.000    0.009    0.000 BasicFamily.py:268(edgeDegree)
+      394    0.003    0.000    0.014    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+      234    0.002    0.000    0.022    0.000 BasicFamily.py:276(getFullyShallowCopy)
+      236    0.002    0.000    0.004    0.000 {built-in method builtins.__build_class__}
+     1566    0.002    0.000    0.003    0.000 BasicFamily.py:426(<genexpr>)
+ 1305/417    0.002    0.000    0.002    0.000 GraphIsoHelper.py:3(getPermutations)
+     1018    0.002    0.000    0.006    0.000 BasicFamily.py:85(addVertices)
+     1042    0.002    0.000    0.009    0.000 BasicFamily.py:389(vertexCharacteristicCounts)
+    12963    0.002    0.000    0.002    0.000 BasicFamily.py:144(edges)
+
+
+M-3-1
+         1680815 function calls (1667102 primitive calls) in 0.915 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   425569    0.087    0.000    0.087    0.000 Edge.py:25(vertices)
+    42128    0.073    0.000    0.104    0.000 GraphIsoHelper.py:69(<genexpr>)
+    41881    0.071    0.000    0.101    0.000 GraphIsoHelper.py:70(<genexpr>)
+   136381    0.062    0.000    0.366    0.000 {built-in method builtins.sum}
+     4066    0.058    0.000    0.304    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+     3336    0.030    0.000    0.164    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+    16112    0.029    0.000    0.044    0.000 BasicFamily.py:426(<genexpr>)
+    18608    0.027    0.000    0.083    0.000 BasicFamily.py:268(edgeDegree)
+    16863    0.026    0.000    0.667    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+    16319    0.022    0.000    0.052    0.000 copy.py:66(copy)
+   147750    0.020    0.000    0.020    0.000 BasicFamily.py:144(edges)
+     1364    0.018    0.000    0.158    0.000 BasicFamily.py:276(getFullyShallowCopy)
+    35444    0.017    0.000    0.025    0.000 BasicFamily.py:242(numEdges)
+12344/5197    0.017    0.000    0.021    0.000 GraphIsoHelper.py:3(getPermutations)
+    33726    0.016    0.000    0.024    0.000 BasicFamily.py:238(numVertices)
+
+
+M-3-2
+         24682897 function calls (24502117 primitive calls) in 13.456 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  7252705    1.494    0.000    1.494    0.000 Edge.py:25(vertices)
+   608880    1.382    0.000    1.984    0.000 GraphIsoHelper.py:69(<genexpr>)
+   611279    1.351    0.000    1.946    0.000 GraphIsoHelper.py:70(<genexpr>)
+    87141    0.919    0.000    5.444    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+  1712592    0.776    0.000    5.950    0.000 {built-in method builtins.sum}
+   438840    0.640    0.000   10.999    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+     8704    0.462    0.000    0.468    0.000 RPC.py:32(__init__)
+   887841    0.428    0.000    0.658    0.000 BasicFamily.py:242(numEdges)
+   877680    0.420    0.000    0.633    0.000 BasicFamily.py:238(numVertices)
+   184480    0.403    0.000    0.618    0.000 BasicFamily.py:426(<genexpr>)
+    33062    0.375    0.000    2.182    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+  2353328    0.351    0.000    0.351    0.000 BasicFamily.py:144(edges)
+   199416    0.309    0.000    0.957    0.000 BasicFamily.py:268(edgeDegree)
+172100/56379    0.270    0.000    0.329    0.000 GraphIsoHelper.py:3(getPermutations)
+  2591135    0.254    0.000    0.254    0.000 {built-in method builtins.len}
+
+
+M-3-3
+         402516051 function calls (399994257 primitive calls) in 213.891 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+132601951   26.565    0.000   26.565    0.000 Edge.py:25(vertices)
+  9610972   26.179    0.000   37.819    0.000 GraphIsoHelper.py:69(<genexpr>)
+  9634649   25.768    0.000   37.233    0.000 GraphIsoHelper.py:70(<genexpr>)
+  1805260   15.158    0.000   99.061    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+    46819   13.828    0.000   13.863    0.000 RPC.py:32(__init__)
+  9430194   13.325    0.000  183.581    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+ 23340148    9.986    0.000   99.652    0.000 {built-in method builtins.sum}
+ 18912218    8.928    0.000   13.907    0.000 BasicFamily.py:242(numEdges)
+ 18860388    8.795    0.000   13.360    0.000 BasicFamily.py:238(numVertices)
+ 39776557    6.081    0.000    6.081    0.000 BasicFamily.py:144(edges)
+  2132666    5.259    0.000    8.108    0.000 BasicFamily.py:426(<genexpr>)
+ 49068631    4.608    0.000    4.608    0.000 {built-in method builtins.len}
+   333830    4.304    0.000   26.781    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+2476323/662695    3.946    0.000    4.806    0.000 GraphIsoHelper.py:3(getPermutations)
+  9430194    3.772    0.000  187.353    0.000 BasicFamily.py:463(isIsomorphicTo)
+
+
+M-4-0
+         13255359 function calls (13021601 primitive calls) in 7.345 seconds
+
+   Ordered by: internal time
+   List reduced from 98 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   471009    1.197    0.000    1.724    0.000 GraphIsoHelper.py:69(<genexpr>)
+   471478    1.170    0.000    1.691    0.000 GraphIsoHelper.py:70(<genexpr>)
+  5792189    1.154    0.000    1.154    0.000 Edge.py:25(vertices)
+    89558    0.675    0.000    4.500    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+230491/14987    0.465    0.000    0.567    0.000 GraphIsoHelper.py:3(getPermutations)
+   932751    0.402    0.000    4.223    0.000 {built-in method builtins.sum}
+   984922    0.137    0.000    0.137    0.000 BasicFamily.py:144(edges)
+    59104    0.129    0.000    0.197    0.000 BasicFamily.py:426(<genexpr>)
+    10680    0.109    0.000    0.652    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+20327/5340    0.109    0.000    0.131    0.000 GraphIsoHelper.py:31(getBijections)
+  1094951    0.105    0.000    0.105    0.000 {built-in method builtins.len}
+    66106    0.100    0.000    6.528    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+    64311    0.097    0.000    0.317    0.000 BasicFamily.py:268(edgeDegree)
+     3858    0.094    0.000    0.096    0.000 RPC.py:32(__init__)
+   756830    0.075    0.000    0.075    0.000 {method 'append' of 'list' objects}
+
+
+M-4-1
+         325538661 function calls (321260627 primitive calls) in 175.409 seconds
+
+   Ordered by: internal time
+   List reduced from 101 to 15 due to restriction <15>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+ 10065191   29.596    0.000   42.949    0.000 GraphIsoHelper.py:69(<genexpr>)
+ 10095491   29.149    0.000   42.327    0.000 GraphIsoHelper.py:70(<genexpr>)
+145729899   28.797    0.000   28.797    0.000 Edge.py:25(vertices)
+  2115954   15.457    0.000  109.588    0.000 GraphIsoHelper.py:52(checkIfBijectionIsIsomorphism)
+ 20275265    8.498    0.000  103.091    0.000 {built-in method builtins.sum}
+4249954/395749    8.195    0.000   10.008    0.000 GraphIsoHelper.py:3(getPermutations)
+  3843670    5.249    0.000  161.913    0.000 GraphIsoHelper.py:104(isIsomorphicTo)
+    31437    5.060    0.000    5.081    0.000 RPC.py:32(__init__)
+ 26461845    3.810    0.000    3.810    0.000 BasicFamily.py:144(edges)
+  7722173    3.656    0.000    5.586    0.000 BasicFamily.py:242(numEdges)
+  7687340    3.640    0.000    5.437    0.000 BasicFamily.py:238(numVertices)
+  1360544    3.483    0.000    5.372    0.000 BasicFamily.py:426(<genexpr>)
+ 31013344    2.911    0.000    2.911    0.000 {built-in method builtins.len}
+500216/104467    2.784    0.000    3.286    0.000 GraphIsoHelper.py:31(getBijections)
+   208934    2.591    0.000   16.664    0.000 BasicFamily.py:419(getVerticesByCharacteristic)
+
+
