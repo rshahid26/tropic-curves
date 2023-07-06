@@ -1,5 +1,3 @@
-import time
-
 from ..basic_families.BasicFamily import *
 import re
 
@@ -190,7 +188,6 @@ class TropicalModuliSpace(object):
                         vertexSplitCurve = self.getSplittingSpecialization(curve, vert, g, vert.genus - g, S, T)
                         newCurves.append(vertexSplitCurve)
 
-        # Reduce newCurves before we go down a level - produce fewer curves to reduce in the future
         newCurvesBuffer = self.reduceByIsomorphism(newCurves)
         newCurves = []
         for c in newCurvesBuffer:
@@ -424,6 +421,31 @@ class TropicalModuliSpace(object):
                 for e in c.edges:
                     contEntry = [entry for entry in edgeContractions if entry[0] == e.vertices].pop()
                     self.contractionDict[c].append((e, curveIdDictionary[contEntry[1]]))
+
+    def print_curves(self):
+        i = 1
+        for curve in self.curves:
+            print("\n" + str(i))
+            BasicFamily.printCurve(curve)
+            i += 1
+
+    def print_curves_compact(self):
+        i = 1
+        for curve in self.curves:
+            print("\n#" + str(i))
+            print("Vertices:", curve.numVertices, end="; ")
+            for vertex in curve.vertices:
+                print(vertex.genus, end=" ")
+            print()
+            print("Edges:", curve.numEdges, end="; ")
+            for edge in curve.edges:
+                print(edge.vert1.name, edge.vert2.name, end=" ")
+            print()
+            print("Legs:", curve.numLegs, end="; ")
+            for leg in curve.legs:
+                print(leg.root.name, end=" ")
+            print()
+            i += 1
 
     def saveModuliSpaceToFile(self, filename="", curveEntryDelimiter="=", encoding='utf-8'):
         if filename == "":

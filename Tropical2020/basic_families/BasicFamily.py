@@ -244,6 +244,10 @@ class BasicFamily(object):
         return len(self.edges)
 
     @property
+    def numLegs(self):
+        return len(self.legs)
+
+    @property
     def numEdgesWithVertices(self):
         return len(self.edgesWithVertices)
 
@@ -441,12 +445,18 @@ class BasicFamily(object):
     def getPermutations(self, lst: list):
         return GraphIsoHelper.getPermutations(lst)
 
+    count = 0
+
     # Checks if the given data constitutes an isomorphism from self to other.
     # domainOrderingDict and codomainOrderingDict should have the same keys, and their values should partition the
     # vertices of self and other with all blocks of the partitions nonempty. The bijection f recovered from this data
     # is as follows: for each key k, and each index of domainOrderingDict[k],
     # f(domainOrderingDict[k][i]) = codomainOrderingDict[k][i].
     def checkIfBijectionIsIsomorphism(self, other, domainOrderingDict: dict, codomainOrderingDict: dict):
+        BasicFamily.count += 1
+        # print("isomorphic run", BasicFamily.count)
+        # print(domainOrderingDict)
+        # print(codomainOrderingDict)
         return GraphIsoHelper.checkIfBijectionIsIsomorphism(self, other, domainOrderingDict, codomainOrderingDict)
 
     # permDict should be of type Dict[Any, List[List[Vertex]]]. It should have the property that for any choice function
@@ -542,8 +552,6 @@ class BasicFamily(object):
             go = len(newNumbers) > 0
 
         return len(numbers) == self.numVertices
-
-
 
     @property
     def core(self):
@@ -674,8 +682,6 @@ class BasicFamily(object):
 
             return ancestorEdges
 
-
-
     @property
     def spanningTree(self):
         return self.getSpanningTree(list(self.vertices)[0])
@@ -719,11 +725,11 @@ class BasicFamily(object):
         return _loops
 
     def getSpanningTree(self, vert):
-        
+
         if not self.isConnected:
             raise ValueError("A spanning tree is only defined for a connected graph")
 
-        tree = self.Tree()          
+        tree = self.Tree()
         tree.setValue(vert)
 
         verticesToCheck = {vert}
@@ -732,16 +738,16 @@ class BasicFamily(object):
 
             nextVertex = verticesToCheck.pop()
 
-            connectedEdges = {e for e in self.edges if (nextVertex == e.vert1 or nextVertex == e.vert2)} 
+            connectedEdges = {e for e in self.edges if (nextVertex == e.vert1 or nextVertex == e.vert2)}
 
-            adjacentVertices = set()          
+            adjacentVertices = set()
 
             for e in connectedEdges:
-                adjacentVertices = adjacentVertices | e.vertices 
+                adjacentVertices = adjacentVertices | e.vertices
 
             newAdjacentVertices = adjacentVertices - set(tree.getVertices())
 
-            nextTree = tree.findVertex(nextVertex)    
+            nextTree = tree.findVertex(nextVertex)
 
             for v in newAdjacentVertices:
                 connectingEdge = {e for e in self.edges if e.vertices == {nextVertex, v}}.pop()
@@ -790,13 +796,14 @@ class BasicFamilyMorphism(object):
                 "curveMorphismDict should preserve leg roots."
         for nextEdge in domain.edges:
             if curveMorphismDict[nextEdge] in codomain.edges:
-                assert set(map(lambda v: curveMorphismDict[v], nextEdge.vertices)) == curveMorphismDict[nextEdge].vertices, \
+                assert set(map(lambda v: curveMorphismDict[v], nextEdge.vertices)) == curveMorphismDict[
+                    nextEdge].vertices, \
                     "curveMorphismDict should preserve endpoints of non-collapsed edges."
                 assert monoidMorphism(nextEdge.length) == curveMorphismDict[nextEdge].length, \
                     "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
             if curveMorphismDict[nextEdge] in codomain.vertices:
                 assert curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert1] and \
-                    curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert2], \
+                       curveMorphismDict[nextEdge] == curveMorphismDict[nextEdge.vert2], \
                     "curveMorphismDict should preserve endpoints of collapsed edges."
                 assert monoidMorphism(nextEdge.length) == codomain.monoid.zero(), \
                     "curveMorphismDict and monoidMorphism should be compatible on edge lengths."
@@ -838,7 +845,7 @@ class BasicFamilyMorphism(object):
         image.addEdges(imageEdges)
         image.addLegs(imageLegs)
         image.monoid = imageMonoid
-        
+
         return image
 
     def __call__(self, x):
