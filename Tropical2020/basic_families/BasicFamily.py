@@ -493,7 +493,7 @@ class BasicFamily(object):
             print(v.name, " with genus ", v.genus)
         print("Edges:")
         for e in curve.edges:
-            print(e.name)
+            print(e.name, [e.vert1.name, e.vert2.name])
         print("Legs:")
         for nextLeg in curve.legs:
             print(nextLeg.name)

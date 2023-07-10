@@ -48,6 +48,7 @@ def profile_moduli_space(genus: int, n: int) -> TropicalModuliSpace:
 
 
 space = TropicalModuliSpace(1, 2)
+#profile_moduli_space(3, 2)
 space.generateSpaceDFS()
-space.print_curves_compact()
+#space.print_curves_compact()
 print(len(space.curves))

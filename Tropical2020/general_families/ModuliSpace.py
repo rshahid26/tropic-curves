@@ -1,5 +1,6 @@
 from ..basic_families.BasicFamily import *
 import re
+from ..Graphs.DirectedGraph import *
 
 
 class TropicalModuliSpace(object):
@@ -21,6 +22,9 @@ class TropicalModuliSpace(object):
         # contractionDict[curve]: List[(edge, Int)]
         # See the documentation for more explanation
         self.contractionDict = {}
+
+        # Directed Acyclic Graph for storing curves
+        self.DAG = DirectedGraph([[0, 0], [1, 0]], [[[0, 1], 0]])
 
     @property
     def curves(self):
@@ -172,9 +176,12 @@ class TropicalModuliSpace(object):
             elif vert.genus == 1 and curve.degree(vert) > 0:
                 genusReducedCurve = self.getGenusReductionSpecialization(curve, vert)
                 newCurves.append(genusReducedCurve)
+                # print("decrement genus yields")
+                # genusReducedCurve.printSelf()
 
             # We can also split a vertex in two and pass around parts of its genus and endpoints to the new pieces
             endpointPartitions = self.getPartitions(curve.getEndpointsOfEdges(vert))
+            #print("partitions", endpointPartitions)
 
             # Anticipate some isomorphic results - (S, T) and (T, S) produce the same splitting specialization
             endpointPartitions = [(S, T) for (S, T) in endpointPartitions if len(S) <= len(T)]
@@ -187,11 +194,19 @@ class TropicalModuliSpace(object):
                     if not ((g == 0 and len(S) < 2) or (g == vert.genus and len(T) < 2)):
                         vertexSplitCurve = self.getSplittingSpecialization(curve, vert, g, vert.genus - g, S, T)
                         newCurves.append(vertexSplitCurve)
+                        # print("splitting genus yields")
+                        # vertexSplitCurve.printSelf()
 
         newCurvesBuffer = self.reduceByIsomorphism(newCurves)
+        # newCurvesBuffer = newCurves
         newCurves = []
+
         for c in newCurvesBuffer:
+            # print("splitting genus after isomorphism yields")
+            # print(c.printSelf())
             if not self.containsUpToIsomorphism(c):
+                # print("splitting genus after isomorphism yields")
+                # print(c.printSelf())
                 newCurves.append(c)
                 self.addCurve(c)
 
@@ -199,6 +214,7 @@ class TropicalModuliSpace(object):
         # print("Currently have ", len(self.curves), " curves!")
         # Specialize the specializations DFS - Moduli Spaces have a wide DAG structure (under the contraction relation)
         for c in newCurves:
+            # print("DFS RAN:", c)
             self.addSpecializationsDFS(c)
 
     # Generates M_{g, n}. To do so, start with the unique n-marked curve of genus g without any edges, and add its
