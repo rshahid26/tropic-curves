@@ -349,22 +349,3 @@ class Graph:
                 
         return mse
 
-
-v = [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]]
-e = [
-    [[0, 1], 2],
-    [[1, 2], 7],
-    [[0, 3], 5],
-    [[3, 2], 3],
-    [[3, 4], 4],
-    [[0, 4], 12]
-]
-
-g = Graph(v, e)
-g.print_adj()
-print()
-g.print_adj_weights()
-
-path = g.get_lightest_path(4, 0)
-print(path)
-print(g.get_path_weight(path))

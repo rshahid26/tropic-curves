@@ -52,11 +52,25 @@ print(space.DAG.vertices)
 print(space.DAG.edges)
 print("final length", len(space.curves))
 
-identifier = list(space.map.keys())[2]
-space.DAG.print_adj()
 
-current = space.DAG.adjacency_list[space.map[identifier]].head
-while current is not None:
-    print(current.weight)
-    current = current.next
+print(space.DAG.edges)
+space.DAG.print_adj()  # see what edge connects to what
 
+uncontraction_tree = space.DAG.minimum_spanning_tree()
+print(uncontraction_tree.edges)  # one of the isomorphisms is removed by calling the MSE
+
+contraction_tree = uncontraction_tree.get_transpose()
+print(contraction_tree.edges)
+
+neighbor = contraction_tree.adjacency_list[2].head  # indexed at zero so 2 means the 3rd vertex
+while neighbor is not None:
+    print(neighbor.data)  # iterate over adjacent graphs
+    neighbor = neighbor.next
+
+path = contraction_tree.get_shortest_path(4, 0)  # see a composition of contractions
+print(path)
+
+both_ways = Graph(space.DAG._vertex_set(), space.DAG.edges)
+path2 = both_ways.get_shortest_path(1, 3)
+
+print(path2)  # uncontracts into graph 2 and then contracts to graph 3
