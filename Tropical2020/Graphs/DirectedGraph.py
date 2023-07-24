@@ -1,10 +1,9 @@
 from .Graph import Graph
-from .WeightedEdgeList import WeightedEdgeList
 
 
 class DirectedGraph(Graph):
 
-    def __init__(self, vertices: list, edges: list):
+    def __init__(self, vertices: list = None, edges: list = None):
         super().__init__(vertices, edges)
         self.edge_class = {
             "tree": [],
@@ -18,24 +17,22 @@ class DirectedGraph(Graph):
             "exit": -1
         } for _ in range(len(self.vertices))]
 
-    def _set_adjacency_list(self):
-        for _ in self.vertices:
-            self.adjacency_list.append(WeightedEdgeList())
+    def add_edge(self, edge_):
+        edge, weight = self._parse_edge(edge_)
+        self.edges.append(edge)
+        self.edge_weights.append(weight)
 
-        for e in range(len(self.edges)):
-            (v1, v2) = (self.edges[e][0], self.edges[e][1])
-            # Edges are only added to the adjacency list in the v1 -> v2 direction
-            self.adjacency_list[v1].prepend(v2, self.edge_weights[e])
+        # Add edges in the v1 -> v2 direction only
+        self.adjacency_list[edge[0]].prepend(edge[1], weight)
 
     def dfs(self, root_vertex):
         return self._recursive_dfs(root_vertex)
 
     def _recursive_dfs(self, root_vertex: int, marked: list = None, history: list = None):
-        """the returned list history has a different meaning here than in super"""
-        # Initialize marked and history matrices non-recursively
+        """The history list has a different meaning here than in super"""
         if history is None:
             marked = list(False for _ in self.vertices)
-            history = [] # Order vertices are processed. reverse of top_sort if graph is a DAG
+            history = []  # Order vertices are processed. reverse of top_sort if graph is a DAG
             self.parents = [-1] * len(self.vertices)
             self._timer = 0
 
@@ -122,3 +119,5 @@ class DirectedGraph(Graph):
     def minimum_spanning_tree(self, vertex: int = None):
         return DirectedGraph(self._vertex_set(), self.minimum_spanning_edges(vertex))
 
+    def kruskal(self):
+        raise Exception("Undirected Graphs only")

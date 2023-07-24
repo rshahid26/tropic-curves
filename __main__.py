@@ -1,4 +1,5 @@
 from Tropical2020.general_families import *
+from Tropical2020.Graphs import *
 import time
 import cProfile
 import pstats
@@ -29,11 +30,8 @@ def profiler_ctx():
 
 
 def profile_moduli_space(genus: int, n: int) -> TropicalModuliSpace:
-    # Run the profiler and save total run time
-    start_time = time.time()
     space = TropicalModuliSpace(genus, n)
     cProfile.run('space.generateSpaceDFS()', 'profiler.prof')
-    end_time = time.time()
 
     # Parse output and save in output.txt
     string_buffer = io.StringIO()
@@ -48,7 +46,17 @@ def profile_moduli_space(genus: int, n: int) -> TropicalModuliSpace:
 
 
 space = TropicalModuliSpace(1, 2)
-#profile_moduli_space(3, 2)
 space.generateSpaceDFS()
-#space.print_curves_compact()
-print(len(space.curves))
+# space.print_curves_compact()
+print(space.DAG.vertices)
+print(space.DAG.edges)
+print("final length", len(space.curves))
+
+identifier = list(space.map.keys())[2]
+space.DAG.print_adj()
+
+current = space.DAG.adjacency_list[space.map[identifier]].head
+while current is not None:
+    print(current.weight)
+    current = current.next
+

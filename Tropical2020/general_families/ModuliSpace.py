@@ -1,9 +1,11 @@
 from ..basic_families.BasicFamily import *
 import re
-from ..Graphs.DirectedGraph import *
+from ..Graphs import *
 
 
 class TropicalModuliSpace(object):
+    count = 0
+
     def __init__(self, g_, n_):
         # Private copy of the genus and marking number of the space
         self._g = g_
@@ -24,7 +26,9 @@ class TropicalModuliSpace(object):
         self.contractionDict = {}
 
         # Directed Acyclic Graph for storing curves
-        self.DAG = DirectedGraph([[0, 0], [1, 0]], [[[0, 1], 0]])
+        self.map = {}
+        self.DAG = DirectedGraph()
+        self.last_curve = None
 
     @property
     def curves(self):
@@ -159,6 +163,8 @@ class TropicalModuliSpace(object):
 
             # Update self.curves
             self.curves = self.curves | {curve}
+            self.updateDAG(self.last_curve, curve)
+            self.last_curve = curve
 
     # Adds the specializations of curve to self.curves
     def addSpecializationsDFS(self, curve):
@@ -214,8 +220,25 @@ class TropicalModuliSpace(object):
         # print("Currently have ", len(self.curves), " curves!")
         # Specialize the specializations DFS - Moduli Spaces have a wide DAG structure (under the contraction relation)
         for c in newCurves:
-            # print("DFS RAN:", c)
             self.addSpecializationsDFS(c)
+
+    def updateDAG(self, source: BasicFamily, target: BasicFamily):
+        if source is None:
+            print("seed curve")
+            self.map[target.name] = self.count
+            self.DAG.add_vertex([self.map[target.name], source])
+            # there are no incoming edges for the seed curve.
+            self.count += 1
+        elif self.original(target.name):
+            self.DAG.add_vertex([self.map[target.name], target])
+            self.count += 1
+            self.DAG.add_edge([self.map[source.name], self.map[target.name]])
+
+    def original(self, identifier: str):
+        if identifier in self.map:
+            return False
+        self.map[identifier] = self.count
+        return True
 
     # Generates M_{g, n}. To do so, start with the unique n-marked curve of genus g without any edges, and add its
     # specializations.

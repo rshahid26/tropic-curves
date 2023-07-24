@@ -2,7 +2,7 @@ class Queue:
     def __init__(self):
         self.queue = []
 
-    def enqueue(self, item):
+    def enqueue(self, item, priority: int = 0):
         self.queue.append(item)
 
     def dequeue(self):
@@ -11,7 +11,7 @@ class Queue:
         else:
             raise IndexError("Queue is empty.")
 
-    def front(self):
+    def peek(self):
         if not self.is_empty():
             return self.queue[0]
         else:
@@ -25,6 +25,9 @@ class Queue:
 
     def is_empty(self):
         return len(self.queue) == 0
+
+    def print(self):
+        print(self.queue)
 
     @property
     def size(self) -> int:

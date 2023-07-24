@@ -1,54 +1,58 @@
 from .Queue import Queue
 from .Stack import Stack
 from .WeightedEdgeList import WeightedEdgeList
+from .Heap import MinHeap
+from .UnionFind import UnionFind
 
 
 class Graph:
-    def __init__(self, vertices: list, edges: list):
+    def __init__(self, vertices: list = None, edges: list = None):
         self.vertices = []
         self.vertex_weights = []
-        self._set_vertices(vertices)
 
         self.edges = []
         self.edge_weights = []
-        self._set_edges(edges)
-
         self.adjacency_list = []
         self.parents = []
-        self._set_adjacency_list()
+        try:
+            for vertex in vertices:
+                self.add_vertex(vertex)
+            for edge in edges:
+                self.add_edge(edge)
+        except TypeError:
+            pass  # Initialized with no elements.
 
-    def _set_vertices(self, vertices: list):
-        for vertex in vertices:
-            if len(vertex) == 2:
-                self.vertices.append(vertex[0])
-                self.vertex_weights.append(vertex[1])
-            else:
-                raise TypeError("Pass in weights for all vertices")
+    def add_vertex(self, vertex_):
+        # Vertices can be entered as either an integer or [vertex, weight]
+        vertex = vertex_ if type(vertex_) == int else vertex_[0]
+        weight = 0 if type(vertex_) == int else vertex_[1]
 
-    def _set_edges(self, edges: list):
-        for edge in edges:
-            if len(edge[0]) == 2:
-                self.edges.append(edge[0])
-                self.edge_weights.append(edge[1])
-            else:
-                raise TypeError("Pass in weights for all edges")
+        self.vertices.append(vertex)
+        self.vertex_weights.append(weight)
+        self.adjacency_list.append(WeightedEdgeList())
 
-    def _set_adjacency_list(self):
-        for _ in self.vertices:
-            self.adjacency_list.append(WeightedEdgeList())
+    def add_edge(self, edge_):
+        edge, weight = self._parse_edge(edge_)
+        self.edges.append(edge)
+        self.edge_weights.append(weight)
 
-        for e in range(len(self.edges)):
-            (v1, v2) = (self.edges[e][0], self.edges[e][1])
-            # Add edges in the v1 -> v2 and v2 -> v1 directions
-            self.adjacency_list[v1].prepend(v2, self.edge_weights[e])
-            self.adjacency_list[v2].prepend(v1, self.edge_weights[e])
+        # Add edges in the v1 -> v2 and v2 -> v1 directions
+        self.adjacency_list[edge[0]].prepend(edge[1], weight)
+        self.adjacency_list[edge[1]].prepend(edge[0], weight)
 
-    def print(self):
+    @staticmethod
+    def _parse_edge(edge_) -> tuple:
+        # Edges can be entered as either [source_v, target_v] or [[source_v, target_v], weight]
+        edge = edge_ if type(edge_[0]) == int else edge_[0]
+        weight = 0 if type(edge_[0]) == int else edge_[1]
+        return edge, weight
+
+    def print_adj(self):
         for i in range(len(self.adjacency_list)):
             print(self.vertices[i], end=": ")
             self.adjacency_list[i].print()
 
-    def print_weights(self):
+    def print_adj_weights(self):
         for i in range(len(self.adjacency_list)):
             print(self.vertices[i], end=": ")
             self.adjacency_list[i].print_weights()
@@ -73,9 +77,10 @@ class Graph:
     def bfs(self, root_vertex: int):
         # Queue for adjacent vertices checked in FIFO order
         queue = Queue()
-        queue.enqueue(self.vertices[root_vertex])
+        queue.enqueue(root_vertex)
         # History of vertices with adjacent lists already searched
         processed = [False for _ in range(len(self.vertices))]
+        visited = [False for _ in range(len(self.vertices))]
         # Dictionary for storing parents of vertices
         self.parents = [-1 for _ in range(len(self.vertices))]
         # Order in which adjacency lists are exhausted
@@ -83,15 +88,16 @@ class Graph:
 
         while queue.size != 0:
             vertex = queue.dequeue()
-            current = self.adjacency_list[vertex].head
 
             if not processed[vertex]:
+                current = self.adjacency_list[vertex].head
                 while current is not None:
+                    if not visited[current.data]:
+                        self.parents[current.data] = vertex
                     if not processed[current.data]:
                         queue.enqueue(current.data)
-                        self.parents[current.data] = vertex
+                    visited[current.data] = True
                     current = current.next
-
                 processed[vertex] = True
                 history.append(vertex)
         return history
@@ -139,47 +145,32 @@ class Graph:
 
         return history if len(history) == len(self.vertices) else marked
 
-    def _recursive_get_shortest_path(self, source: int, target: int, path: list = None) -> list:
-        """Returns an array of vertices that go from source vertex to target vertex"""
-        if path is None:
-            self.bfs(source)
-            path = [target]
-        if self.parents[target] == -1:
-            return [-1]
-
-        path.append(self.parents[target])
-        if self.parents[target] == source:
-            return path[::-1]
-        else:
-            return self._recursive_get_shortest_path(source, self.parents[target], path)
-
     def get_shortest_path(self, source: int, target: int):
         self.bfs(source)
-        return self.__find_path(source, target)
+        return self._find_path(source, target)
 
     def get_dfs_path(self, source: int, target: int):
         self.dfs(source)
-        return self.__find_path(source, target)
+        return self._find_path(source, target)
 
-    def __find_path(self, source: int, target: int):
+    def _find_path(self, source: int, target: int) -> list:
         path = [target]
         while self.parents[target] != source:
             if self.parents[target] == -1:
                 if target == source:
                     break
-                return -1
+                return []
 
             path.append(self.parents[target])
             target = self.parents[target]
 
         path.append(source)
         return path[::-1]
-
-    def get_edge_weight(self, path: list) -> int:
+    
+    def get_path_weight(self, path: list) -> int:
         weight = 0
         for i in range(len(path) - 1):
-
-            current = self.adjacency_list[i].head
+            current = self.adjacency_list[path[i]].head
             while current is not None:
                 if current.data == path[i + 1]:
                     weight += current.weight
@@ -188,6 +179,38 @@ class Graph:
             if current is None:
                 raise ReferenceError("Path does not exist")
         return weight
+
+    def get_lightest_path(self, source: int, target: int) -> list:
+        self.parents = [-1] * len(self.vertices)
+        processed = [False] * len(self.vertices)
+        distances = [float('inf')] * len(self.vertices)
+        distances[source] = 0
+
+        heap = MinHeap()
+        heap.append(source, 0)
+        while heap.size != 0:
+            vertex, distance = heap.poll_object().values()
+            if not processed[vertex]:
+                processed[vertex] = True
+
+                current = self.adjacency_list[vertex].head
+                while current is not None:
+                    if not processed[current.data]:
+                        if distances[current.data] > distance + current.weight:
+                            self.parents[current.data] = vertex
+                            distances[current.data] = distance + current.weight
+                            heap.append(current.data, distances[current.data])
+                    current = current.next
+        return self._find_path(source, target)
+
+    def adjacency_matrix(self):
+        pass
+
+    def floyd_warshall(self, root_vertex):
+        pass
+
+    def get_center(self):
+        pass
 
     def is_connected(self) -> bool:
         component = self.bfs(self.vertices[0])
@@ -246,81 +269,102 @@ class Graph:
 
         return tree_edges
 
-    def get_cycles(self, root=None) -> set:
-        if root is None:
-            back_edges = self.get_back_edges(self.vertices[0])
-        else:
-            back_edges = self.get_back_edges(root)
+    def get_cycles(self, root_vertex: int) -> list:
+        stack = Stack()
+        stack.push(root_vertex)
+        processed = [False] * len(self.vertices)
+        self.parents = [-1 for _ in range(len(self.vertices))]
+        cycles = []
 
-        cycles = set()
-        for edge in back_edges:
-            cycle = self.get_dfs_path(edge[1], edge[0])
-            cycle.extend(edge[1:])
+        while stack.size != 0:
+            vertex = stack.pop()
+            current = self.adjacency_list[vertex].head
 
-            cycles.add(tuple(cycle))  # immutable so we save on space/time
+            if not processed[vertex]:
+                while current is not None:
+                    if not processed[current.data]:
+                        stack.push(current.data)
+                        self.parents[current.data] = vertex
+                    elif self.parents[vertex] != current.data:
+                        cycles.append([vertex] +
+                                      self.get_dfs_path(self.parents[vertex], current.data) +
+                                      [vertex])
+                    current = current.next
+                processed[vertex] = True
         return cycles
 
     def minimum_spanning_edges(self, vertex: int = None) -> list:
-        """Implements Prim's algorithm for constructing MSTs. Assumes connected graph"""
-        vertex_set = [self.vertices[0] if vertex is None else vertex]
+        def add_edges_to_heap(v):
+            current = self.adjacency_list[v].head
+            while current is not None:
+                if not processed[current.data]:
+                    heap.append([v, current.data], current.weight)
+                current = current.next
+
+        def get_minimum_edge():
+            while processed[heap.peek()["item"][1]]:
+                heap.poll_object()
+            return heap.poll_object()
+
+        vertex = vertex if vertex is not None else self.vertices[0]
         processed = [False] * len(self.vertices)
-        processed[vertex_set[0]] = True
+        heap, mse = MinHeap(), []
 
-        minimum_edge = []
-        MSE = []
-        while len(vertex_set) != len(self.vertices):
-            minimum_weight = float('inf')
+        add_edges_to_heap(vertex)
+        processed[vertex] = True
+        while processed.count(True) < len(self.vertices):
+            min_edge = get_minimum_edge()
+            found_vertex = min_edge["item"][1]
 
-            for i in vertex_set:
-                current = self.adjacency_list[i].head
-                while current is not None:
-                    if current.weight < minimum_weight and not processed[current.data]:
-                        minimum_edge = [i, current.data]
-                        minimum_weight = current.weight
-                    current = current.next
-
-            MSE.append([minimum_edge, minimum_weight])
-            vertex_set.append(minimum_edge[1])
-            processed[minimum_edge[1]] = True
-        return MSE
+            mse.append([min_edge["item"], min_edge["priority"]])
+            add_edges_to_heap(found_vertex)
+            processed[found_vertex] = True
+        return mse
 
     def minimum_spanning_tree(self, vertex: int = None):
-        # Returns the minimum spanning edges as an object of the Graph class
+        """Returns the minimum spanning edges as an object of the Graph class"""
         return Graph(self._vertex_set(), self.minimum_spanning_edges(vertex))
 
     def _vertex_set(self):
-        # Reconstructs vertex argument passed into Graph class
-        vertex_set = [1] * len(self.vertices)
-        for vertex in self.vertices:
-            # Place vertices next to their vertex weights again
-            vertex_set[vertex] = [self.vertices[vertex], self.vertex_weights[vertex]]
-        return vertex_set
+        """Reconstructs vertex argument passed into constructor"""
+        return list(zip(self.vertices, self.vertex_weights))
 
-    def _sort_edges(self):
-        edges = self.edges.copy()
-        weights = self.edge_weights.copy()
-        for i in range(len(edges)):
-            for j in range(i, len(edges), 1):
-                # Assumes edge and edge_weight index is unchanged since initializing
-                if weights[j] < weights[i]:
-                    weights[i], weights[j] = weights[j], weights[i]
-                    edges[i], edges[j] = edges[j], edges[i]
-        return edges
+    def _edge_set(self):
+        """Reconstructs edge argument passed into constructor"""
+        return list(zip(self.edges, self.edge_weights))
 
-    def kruskal(self):
-        sorted_edges = self._sort_edges()
-        spanning_trees = [[False] * len(self.vertices)] * len(self.vertices)
-        MSE = []
+    def get_sorted_edges(self):
+        pq = MinHeap(self._edge_set()).get_sort().queue
+        return [element["item"] for element in pq]
 
-        while len(MSE) < len(self.vertices) - 1:
-            edge = sorted_edges.pop(0)
-            if not spanning_trees[edge[0]][edge[1]]:
-                MSE.append(edge)
-                for i in range(len(self.vertices)):
-                    # Combine the trees
-                    if spanning_trees[edge[0]][i]:
-                        spanning_trees[edge[1]][i] = True
-                    if spanning_trees[edge[1]][i]:
-                        spanning_trees[edge[0]][i] = True
-        return MSE
+    def kruskal(self):    
+        sorted_edges = self.get_sorted_edges()
+        uf = UnionFind(self.vertices)
+        mse = []
 
+        for edge in sorted_edges:
+            if not uf.is_connected(edge[0], edge[1]):
+                uf.union(edge[0], edge[1])
+                mse.append(edge)
+                
+        return mse
+
+
+v = [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]]
+e = [
+    [[0, 1], 2],
+    [[1, 2], 7],
+    [[0, 3], 5],
+    [[3, 2], 3],
+    [[3, 4], 4],
+    [[0, 4], 12]
+]
+
+g = Graph(v, e)
+g.print_adj()
+print()
+g.print_adj_weights()
+
+path = g.get_lightest_path(4, 0)
+print(path)
+print(g.get_path_weight(path))
