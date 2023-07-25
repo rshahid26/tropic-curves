@@ -15,7 +15,7 @@ class TropicalModuliSpace(object):
         # Should not be set externally - the strata are generated based on _g and _n
         # The strata are not generated here since this can be a time-consuming process. (Let the user choose when to
         # take the time to do so...)
-        self._curves = set()
+        self._curves = []
 
         # Curves organized by number of edges
         self._curvesDict = {}
@@ -28,7 +28,6 @@ class TropicalModuliSpace(object):
         # Directed Acyclic Graph for storing curves
         self.map = {}
         self.DAG = DirectedGraph()
-        self.last_curve = None
 
     @property
     def curves(self):
@@ -93,7 +92,7 @@ class TropicalModuliSpace(object):
             # Effectively, self.curves = union(self.curvesDict.values())
             self.curves = set()
             for n in self.curvesDict:
-                self.curves = self.curves | set(self.curvesDict[n])
+                self.curves = list(set(self.curves | set(self.curvesDict[n])))
         else:
             # Since isomorphism is an equivalence relation, we might not have to check every pair of curves for iso.
             # Our algorithm is to iterate over the given curves and check for isomorphism with a representative of each
@@ -117,9 +116,9 @@ class TropicalModuliSpace(object):
 
             if returnReductionInformation:
                 reductionDict = {t[0]: t for t in isotypes}
-                return {t[0] for t in isotypes}, reductionDict
+                return [t[0] for t in isotypes], reductionDict
             else:
-                return {t[0] for t in isotypes}
+                return [t[0] for t in isotypes]
 
     # Checks if curve is contained in self.curves up to isomorphism.
     # Optionally, the user can ask for the match to be returned, if it exists.
@@ -148,7 +147,7 @@ class TropicalModuliSpace(object):
 
     # Adds "curve" to self.curves and self.curvesDict if it is not already present up to isomorphism. If the curve is
     # already present, then nothing is added.
-    def addCurve(self, curve):
+    def addCurve(self, curve, old_curve=None):
 
         curveIsNew = not self.containsUpToIsomorphism(curve)
 
@@ -162,9 +161,8 @@ class TropicalModuliSpace(object):
                 self.curvesDict[numEdges] = [curve]
 
             # Update self.curves
-            self.curves = self.curves | {curve}
-            self.updateDAG(self.last_curve, curve)
-            self.last_curve = curve
+            self.curves.append(curve)
+            self.updateDAG(old_curve, curve)
 
     # Adds the specializations of curve to self.curves
     def addSpecializationsDFS(self, curve):
@@ -214,7 +212,7 @@ class TropicalModuliSpace(object):
                 # print("splitting genus after isomorphism yields")
                 # print(c.printSelf())
                 newCurves.append(c)
-                self.addCurve(c)
+                self.addCurve(c, curve)
 
         # print("Found ", len(newCurves), " new curves")
         # print("Currently have ", len(self.curves), " curves!")
@@ -222,21 +220,24 @@ class TropicalModuliSpace(object):
         for c in newCurves:
             self.addSpecializationsDFS(c)
 
-    def updateDAG(self, source: BasicFamily, target: BasicFamily):
-        if source is None:
-            print("seed curve")
-            self.map[target.name] = self.count
-            self.DAG.add_vertex([self.map[target.name], source])
+    def updateDAG(self, old_curve: BasicFamily, curve: BasicFamily):
+        #print(old_curve if old_curve is None else old_curve.name, "LEADS TO", curve.name, self.count)
+        if old_curve is None:
+            self.map[curve.name] = self.count
+            self.DAG.add_vertex([self.map[curve.name], old_curve])
             # there are no incoming edges for the seed curve.
             self.count += 1
-        elif self.original(target.name):
-            self.DAG.add_vertex([self.map[target.name], target])
+        else:
+            self.map[curve.name] = self.count
+            self.DAG.add_vertex([self.map[curve.name], curve])
             self.count += 1
-            self.DAG.add_edge([self.map[source.name], self.map[target.name]])
+            self.DAG.add_edge([self.map[old_curve.name], self.map[curve.name]])
 
     def original(self, identifier: str):
         if identifier in self.map:
+            print("NOT ORIGINAL", self.count)
             return False
+        print("ORIGINAL", self.count)
         self.map[identifier] = self.count
         return True
 

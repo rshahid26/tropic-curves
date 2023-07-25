@@ -203,15 +203,6 @@ class Graph:
                     current = current.next
         return self._find_path(source, target)
 
-    def adjacency_matrix(self):
-        pass
-
-    def floyd_warshall(self, root_vertex):
-        pass
-
-    def get_center(self):
-        pass
-
     def is_connected(self) -> bool:
         component = self.bfs(self.vertices[0])
         return len(component) == len(self.vertices)
