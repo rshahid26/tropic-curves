@@ -28,6 +28,7 @@ class TropicalModuliSpace(object):
         # Directed Acyclic Graph for storing curves
         self.map = {}
         self.DAG = DirectedGraph()
+        self.source = None
 
     @property
     def curves(self):
@@ -137,7 +138,7 @@ class TropicalModuliSpace(object):
                     if returnMatch:
                         return True, c
                     else:
-                        return True
+                        return c
 
         # If this code is reached, then no match was found
         if returnMatch:
@@ -147,8 +148,7 @@ class TropicalModuliSpace(object):
 
     # Adds "curve" to self.curves and self.curvesDict if it is not already present up to isomorphism. If the curve is
     # already present, then nothing is added.
-    def addCurve(self, curve, old_curve=None):
-
+    def addCurve(self, curve):
         curveIsNew = not self.containsUpToIsomorphism(curve)
 
         if curveIsNew:
@@ -162,7 +162,6 @@ class TropicalModuliSpace(object):
 
             # Update self.curves
             self.curves.append(curve)
-            self.updateDAG(old_curve, curve)
 
     # Adds the specializations of curve to self.curves
     def addSpecializationsDFS(self, curve):
@@ -208,11 +207,17 @@ class TropicalModuliSpace(object):
         for c in newCurvesBuffer:
             # print("splitting genus after isomorphism yields")
             # print(c.printSelf())
-            if not self.containsUpToIsomorphism(c):
+
+            iso = self.containsUpToIsomorphism(c)
+            if iso:
+                print("ADDING ISOMORPHIC EDGE")
+                self.updateDAG(curve, iso, False)
+            else:
+                self.updateDAG(curve, c)
                 # print("splitting genus after isomorphism yields")
                 # print(c.printSelf())
                 newCurves.append(c)
-                self.addCurve(c, curve)
+                self.addCurve(c)
 
         # print("Found ", len(newCurves), " new curves")
         # print("Currently have ", len(self.curves), " curves!")
@@ -220,26 +225,14 @@ class TropicalModuliSpace(object):
         for c in newCurves:
             self.addSpecializationsDFS(c)
 
-    def updateDAG(self, old_curve: BasicFamily, curve: BasicFamily):
-        #print(old_curve if old_curve is None else old_curve.name, "LEADS TO", curve.name, self.count)
-        if old_curve is None:
-            self.map[curve.name] = self.count
-            self.DAG.add_vertex([self.map[curve.name], old_curve])
-            # there are no incoming edges for the seed curve.
+    def updateDAG(self, source: BasicFamily, target: BasicFamily, original=True):
+        #print(source if source is None else source.name, "LEADS TO", target.name, self.count)
+        if original:
+            self.map[target.name] = self.count
             self.count += 1
-        else:
-            self.map[curve.name] = self.count
-            self.DAG.add_vertex([self.map[curve.name], curve])
-            self.count += 1
-            self.DAG.add_edge([self.map[old_curve.name], self.map[curve.name]])
-
-    def original(self, identifier: str):
-        if identifier in self.map:
-            print("NOT ORIGINAL", self.count)
-            return False
-        print("ORIGINAL", self.count)
-        self.map[identifier] = self.count
-        return True
+            self.DAG.add_vertex([self.map[target.name], target])
+        if source is not None:
+            self.DAG.add_edge([self.map[source.name], self.map[target.name]])
 
     # Generates M_{g, n}. To do so, start with the unique n-marked curve of genus g without any edges, and add its
     # specializations.
@@ -258,6 +251,7 @@ class TropicalModuliSpace(object):
 
         # Let the seed grow!
         self.addCurve(seedCurve)
+        self.updateDAG(None, seedCurve)
         self.addSpecializationsDFS(seedCurve)
 
     # For each curve in the space, and each edge of the curve, identify what curve in the space is isomorphic to the

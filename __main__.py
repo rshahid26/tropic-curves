@@ -50,6 +50,9 @@ space.generateSpaceDFS()
 # space.print_curves_compact()
 print(space.DAG.vertices)
 print(space.DAG.edges)
+
+print(len(space.DAG.edges), "uncontractions")
+print(len(space.DAG.minimum_spanning_tree().edges), "unique uncontractions")
 print("final length", len(space.curves))
 
 
