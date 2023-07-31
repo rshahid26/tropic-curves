@@ -45,15 +45,37 @@ def profile_moduli_space(genus: int, n: int) -> TropicalModuliSpace:
     return space
 
 
-space = TropicalModuliSpace(2, 2)
+def print_contraction_edges(space: TropicalModuliSpace) -> None:
+    space.generateContractionDictionary()
+    for element in list(space.contractionDict.values()):
+        print(len(element), end=" ")
+    print()
+    for element in list(space.contractionDict.values()):
+        for tup in element:
+            print(tup[0].name, tup[0].vert1.name, tup[0].vert2.name)
+
+
+space = TropicalModuliSpace(1, 2)
 space.generateSpaceDFS()
 # space.print_curves_compact()
+
+space.generateContractionDictionary()
+for element in list(space.contractionDict.values()):
+    print(len(element), end=" ")
+print()
+for key, element in space.contractionDict.items():
+    print("VERTEX")
+    for tup in element:
+        # print(key.name)
+        print(tup[1].name)
+        #print(tup[0].name, tup[0].vert1.name, tup[0].vert2.name)
+
 print(space.DAG.vertices)
 print(space.DAG.edges)
-
 print(len(space.DAG.edges), "uncontractions")
-print(len(space.DAG.minimum_spanning_tree().edges), "unique uncontractions")
-print("final length", len(space.curves))
+
+# print(len(space.DAG.minimum_spanning_tree().edges), "unique uncontractions")
+# print("final length", len(space.curves))
 
 
 # print(space.DAG.edges)

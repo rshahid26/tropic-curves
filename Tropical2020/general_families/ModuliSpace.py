@@ -28,7 +28,6 @@ class TropicalModuliSpace(object):
         # Directed Acyclic Graph for storing curves
         self.map = {}
         self.DAG = DirectedGraph()
-        self.source = None
 
     @property
     def curves(self):
@@ -211,9 +210,9 @@ class TropicalModuliSpace(object):
             iso = self.containsUpToIsomorphism(c)
             if iso:
                 print("ADDING ISOMORPHIC EDGE")
-                self.updateDAG(curve, iso, False)
+                #self.updateDAG(curve, iso, False)
             else:
-                self.updateDAG(curve, c)
+                self.updateDAG(None, c)
                 # print("splitting genus after isomorphism yields")
                 # print(c.printSelf())
                 newCurves.append(c)
@@ -226,11 +225,12 @@ class TropicalModuliSpace(object):
             self.addSpecializationsDFS(c)
 
     def updateDAG(self, source: BasicFamily, target: BasicFamily, original=True):
-        #print(source if source is None else source.name, "LEADS TO", target.name, self.count)
+        print(source if source is None else source.name, "LEADS TO", target.name, self.count)
         if original:
             self.map[target.name] = self.count
             self.count += 1
             self.DAG.add_vertex([self.map[target.name], target])
+
         if source is not None:
             self.DAG.add_edge([self.map[source.name], self.map[target.name]])
 
@@ -266,6 +266,7 @@ class TropicalModuliSpace(object):
             print("Working on getting contraction history of curve", str(it) + "/" + str(numCurves),
                   "of M-" + str(self._g) + "-" + str(self._n))
 
+            curve.printSelf()
             # Find each contraction pair (curve/{e}, e)
             contractionPairs = []
             for nextEdge in curve.edges:
@@ -279,6 +280,7 @@ class TropicalModuliSpace(object):
                 # This had better be true! Remember to generate the space...
                 assert containsAMatch
                 contractionPairs.append((nextEdge, match))
+                self.updateDAG(curve, match, False)
 
             self.contractionDict[curve] = contractionPairs
             it += 1
