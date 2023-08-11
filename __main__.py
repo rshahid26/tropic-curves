@@ -4,6 +4,8 @@ import time
 import cProfile
 import pstats
 import io
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 def construct_graph(identifier: str) -> BasicFamily:
@@ -55,47 +57,63 @@ def print_contraction_edges(space: TropicalModuliSpace) -> None:
             print(tup[0].name, tup[0].vert1.name, tup[0].vert2.name)
 
 
-space = TropicalModuliSpace(1, 2)
+space = TropicalModuliSpace(2, 2)
 space.generateSpaceDFS()
-# space.print_curves_compact()
+
 
 space.generateContractionDictionary()
-for element in list(space.contractionDict.values()):
-    print(len(element), end=" ")
-print()
-for key, element in space.contractionDict.items():
-    print("VERTEX")
-    for tup in element:
-        # print(key.name)
-        print(tup[1].name)
-        #print(tup[0].name, tup[0].vert1.name, tup[0].vert2.name)
-
 print(space.DAG.vertices)
 print(space.DAG.edges)
-print(len(space.DAG.edges), "uncontractions")
 
-# print(len(space.DAG.minimum_spanning_tree().edges), "unique uncontractions")
-# print("final length", len(space.curves))
+print(len(space.DAG.edges), "contractions")
+print(len(space.curves), "contractions up to orbits")
+print(len(space.DAG.edges), "uncontractions up to isomorphisms")
+
+G = nx.MultiDiGraph()
+G.add_nodes_from(space.DAG.vertices)
+G.add_edges_from(space.DAG.edges)
 
 
-# print(space.DAG.edges)
-# space.DAG.print_adj()  # see what edge connects to what
-#
-# uncontraction_tree = space.DAG.minimum_spanning_tree()
-# print(uncontraction_tree.edges)  # one of the isomorphisms is removed by calling the MSE
-#
-# contraction_tree = uncontraction_tree.get_transpose()
-# print(contraction_tree.edges)
-#
-# neighbor = contraction_tree.adjacency_list[2].head  # indexed at zero so 2 means the 3rd vertex
-# while neighbor is not None:
-#     print(neighbor.data)  # iterate over adjacent graphs
-#     neighbor = neighbor.next
-#
-# path = contraction_tree.get_shortest_path(4, 0)  # see a composition of contractions
-# print(path)
-#
-# both_ways = Graph(space.DAG._vertex_set(), space.DAG.edges)
-# path2 = both_ways.get_shortest_path(1, 3)
-#
-# print(path2)  # uncontracts into graph 2 and then contracts to graph 3
+def build_layers(G, root):
+    distances = {node: nx.shortest_path_length(G, source=node, target=root) for node in G.nodes()}
+    max_distance = max(distances.values())
+    layers = [[] for _ in range(max_distance + 1)]
+    for node, distance in distances.items():
+        layers[max_distance - distance].append(node)
+    return layers
+
+
+def build_positions(layers):
+    pos = {}
+    for layer_index, layer in enumerate(layers):
+        y_position = -layer_index
+        for node_index, node in enumerate(layer):
+            x_position = (len(layer) - 1) * -0.5 + node_index
+            pos[node] = (x_position, y_position)
+    return pos
+
+
+root_vertex = 0
+layers = build_layers(G, root_vertex)
+positions = build_positions(layers)
+
+for u, v in set(G.edges()):
+    num_edges = G.number_of_edges(u, v)
+    if num_edges == 1:
+        nx.draw_networkx_edges(G, positions, edgelist=[(u, v)], width=1, edge_color='black')
+    else:
+
+        for edge_index in range(num_edges):
+            num_curves = (num_edges - 1) if num_edges % 2 == 0 else num_edges
+            # Calculate the curvature based on the edge index and number of curvatures
+            rad = 0.15 * (edge_index - (num_curves - 1) / 2)
+            nx.draw_networkx_edges(G, positions, edgelist=[(u, v)], width=1, edge_color='black',
+                                   connectionstyle=f"arc3,rad={rad}")
+
+nx.draw(G, positions, with_labels=True, node_size=710, arrowsize=20)
+plt.title(f'G_{space._g}_{space._n}', fontsize=16)
+plt.text(0.5, -0.04, f'{len(space.DAG.edges)} contractions', fontsize=12, ha='center', transform=plt.gca().transAxes)
+plt.text(0.5, -0.08, f'{len(space.DAG.get_transpose().minimum_spanning_tree().edges)} uncontractions up to isomorphisms', fontsize=12, ha='center', transform=plt.gca().transAxes)
+plt.axis('equal')
+plt.show()
+

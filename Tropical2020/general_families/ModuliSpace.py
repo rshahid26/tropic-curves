@@ -209,10 +209,11 @@ class TropicalModuliSpace(object):
 
             iso = self.containsUpToIsomorphism(c)
             if iso:
-                print("ADDING ISOMORPHIC EDGE")
-                #self.updateDAG(curve, iso, False)
+                pass
+                # print("ADDING ISOMORPHIC EDGE")
+                # self.updateDAG(curve, iso, False)
             else:
-                self.updateDAG(None, c)
+                # self.updateDAG(curve, c)
                 # print("splitting genus after isomorphism yields")
                 # print(c.printSelf())
                 newCurves.append(c)
@@ -225,14 +226,22 @@ class TropicalModuliSpace(object):
             self.addSpecializationsDFS(c)
 
     def updateDAG(self, source: BasicFamily, target: BasicFamily, original=True):
-        print(source if source is None else source.name, "LEADS TO", target.name, self.count)
-        if original:
-            self.map[target.name] = self.count
-            self.count += 1
-            self.DAG.add_vertex([self.map[target.name], target])
+        source_id = hash(tuple(sorted(source.vertexCharacteristicCounts.items()))) if source else None
+        target_id = hash(tuple(sorted(target.vertexCharacteristicCounts.items()))) if target else None
 
+        if original:
+            self.map[target_id] = self.count
+            self.count += 1
+            self.DAG.add_vertex([self.map[target_id], target])
         if source is not None:
-            self.DAG.add_edge([self.map[source.name], self.map[target.name]])
+            self.DAG.add_edge([self.map[source_id], self.map[target_id]])
+
+    def contraction_map(self, graph: BasicFamily):
+        id = hash(tuple(sorted(graph.vertexCharacteristicCounts.items())))
+        if id not in self.map:
+            self.map[id] = self.count
+            self.count += 1
+            self.DAG.add_vertex([self.map[id], graph])
 
     # Generates M_{g, n}. To do so, start with the unique n-marked curve of genus g without any edges, and add its
     # specializations.
@@ -263,11 +272,12 @@ class TropicalModuliSpace(object):
 
         # Find contraction info of every curve
         for curve in self.curves:
-            print("Working on getting contraction history of curve", str(it) + "/" + str(numCurves),
-                  "of M-" + str(self._g) + "-" + str(self._n))
+            # print("Working on getting contraction history of curve", str(it) + "/" + str(numCurves),
+            #       "of M-" + str(self._g) + "-" + str(self._n))
 
-            curve.printSelf()
+            # curve.printSelf()
             # Find each contraction pair (curve/{e}, e)
+            # print(curve.vertexCharacteristicCounts)
             contractionPairs = []
             for nextEdge in curve.edges:
                 contractionCurve = curve.getContraction(nextEdge)
@@ -280,6 +290,9 @@ class TropicalModuliSpace(object):
                 # This had better be true! Remember to generate the space...
                 assert containsAMatch
                 contractionPairs.append((nextEdge, match))
+
+                self.contraction_map(curve)
+                self.contraction_map(match)
                 self.updateDAG(curve, match, False)
 
             self.contractionDict[curve] = contractionPairs
