@@ -25,15 +25,11 @@ def construct_graph(identifier: str) -> BasicFamily:
     return graph
 
 
-def profiler_ctx():
-    context = {}
-    cProfile.runctx('graph = BasicFamily("test")', globals(), context)
-    cProfile.runctx('space = TropicalModuliSpace(2, 1)', globals(), context)
-
-
 def profile_moduli_space(genus: int, n: int) -> TropicalModuliSpace:
     space = TropicalModuliSpace(genus, n)
-    cProfile.run('space.generateSpaceDFS()', 'profiler.prof')
+
+    local_ctx = {'space': space}
+    cProfile.runctx('space.generateSpaceDFS()', globals(), local_ctx, 'profiler.prof')
 
     # Parse output and save in output.txt
     string_buffer = io.StringIO()
@@ -57,11 +53,10 @@ def print_contraction_edges(space: TropicalModuliSpace) -> None:
             print(tup[0].name, tup[0].vert1.name, tup[0].vert2.name)
 
 
-space = TropicalModuliSpace(2, 2)
+space = TropicalModuliSpace(3, 2)
 space.generateSpaceDFS()
-
-
 space.generateContractionDictionary()
+
 print(space.DAG.vertices)
 print(space.DAG.edges)
 

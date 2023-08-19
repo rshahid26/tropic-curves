@@ -63,14 +63,25 @@ class GraphIsoHelper(object):
         # print("Checking input list: ", [v.name for v in inputList])
         # print("With corresponding output list: ", [v.name for v in outputList])
 
-        for i in range(len(inputList)):
-            for j in range(len(inputList)):
-                # Number of edges connecting inputList[i] and inputList[j]
-                numInputEdges = sum(1 for e in domain.edges if e.vertices == {inputList[i], inputList[j]})
-                numOutputEdges = sum(1 for e in codomain.edges if e.vertices == {outputList[i], outputList[j]})
-                if numInputEdges != numOutputEdges:
-                    # print("Function does not preserve number of connecting edges")
-                    return False
+        def create_connectivity_matrix(graph, vertex_order):
+            n = len(vertex_order)
+            matrix = [[0] * n for _ in range(n)]
+            for e in graph.edges:
+                if len(tuple(e.vertices)) == 1:
+                    v1 = v2 = tuple(e.vertices)[0]
+                else:
+                    v1, v2 = tuple(e.vertices)
+
+                idx1, idx2 = vertex_order.index(v1), vertex_order.index(v2)
+                matrix[idx1][idx2] += 1
+                matrix[idx2][idx1] += 1
+            return matrix
+
+        domain_matrix = create_connectivity_matrix(domain, inputList)
+        codomain_matrix = create_connectivity_matrix(codomain, outputList)
+
+        if domain_matrix != codomain_matrix:
+            return False
 
         for i in range(len(inputList)):
             if inputList[i].genus != outputList[i].genus:
